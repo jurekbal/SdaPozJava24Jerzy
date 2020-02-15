@@ -9,7 +9,8 @@ public class Zad5 {
         Scanner sc = new Scanner(System.in);
 
         System.out.print("Podaj liczbę:");
-        int liczba = sc.nextInt();
+        int liczba = Integer.valueOf(sc.nextLine());
+
         int sumaCyfr = 0;
 
         int dzielona = liczba;
@@ -20,7 +21,19 @@ public class Zad5 {
 
         System.out.println("Suma cyfr liczby: " + liczba + " wynosi: " + sumaCyfr);
 
-        //        String liczbaStr = sc.nextLine();
-//        liczbaStr.split();
+        //wersja z liczbą jako String
+        System.out.print("Podaj liczbę jeszcze raz: ");
+        String liczbaStr = sc.nextLine();
+        //String liczbaStr = "567";
+
+        sumaCyfr = 0;
+        for (int i = 0; i < liczbaStr.length(); i++) {
+            char c = liczbaStr.charAt(i);
+            sumaCyfr += Integer.valueOf(String.valueOf(c));
+        }
+
+        System.out.println("Suma cyfr liczby: " + liczbaStr + " wynosi: " + sumaCyfr);
+
+        //        liczbaStr.split();
     }
 }
