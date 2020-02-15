@@ -12,10 +12,10 @@ public class Zad5 {
         int liczba = sc.nextInt();
         int sumaCyfr = 0;
 
-        int rozbierana = liczba;
-        while (rozbierana > 0) {
-            sumaCyfr += rozbierana % 10;
-            rozbierana /= 10;
+        int dzielona = liczba;
+        while (dzielona > 0) {
+            sumaCyfr += dzielona % 10;
+            dzielona /= 10;
         }
 
         System.out.println("Suma cyfr liczby: " + liczba + " wynosi: " + sumaCyfr);
