@@ -13,39 +13,46 @@ public class Pracownik {
     private int liczbaDzieci;
     private boolean stanCywilny; // true = mężatka/żonaty;
 
-    public void wyswietlWszystko(){
+    public void wyswietlWszystko() {
         System.out.println("Imie: " + this.imie);
-        System.out.println("Nazwisko" + this.nazwisko);
+        System.out.println("Nazwisko: " + this.nazwisko);
         System.out.println("Płeć: " + this.plec);
         System.out.println("Nr działu: " + this.nrDzialu);
-        System.out.println("Płaca: " + this.placa + "zł");
+        System.out.println("Płaca: " + this.placa + " zł");
         System.out.println("Wiek: " + this.wiek);
         System.out.println("Liczba dzieci: " + this.liczbaDzieci);
-        System.out.println("Stan cywilny: " + (stanCywilny?"mężatka/żonaty":"stanu wolnego"));
+        System.out.println("Stan cywilny: " + (stanCywilny ? "mężatka/żonaty" : "stanu wolnego"));
     }
 
-    public void wyswietlOkrojone(){
+    public void wyswietlOkrojone() {
         System.out.println("Imie: " + this.imie);
-        System.out.println("Nazwisko" + this.nazwisko);
-        System.out.println("Płaca: " + this.placa + "zł");
+        System.out.println("Nazwisko: " + this.nazwisko);
+        System.out.println("Płaca: " + this.placa + " zł");
     }
 
     public void wyswietlSpecjalne() {
         System.out.println("Imie: " + this.imie.toUpperCase());
-        System.out.println("Nazwisko" + this.nazwisko.toUpperCase());
+        System.out.println("Nazwisko: " + this.nazwisko.toUpperCase());
     }
 
-    public String getImie() {
-        return imie;
-    }
-
-    public boolean czyPensjaPowyzej(float kwotaDoPorownania){
+    public boolean czyPensjaPowyzej(float kwotaDoPorownania) {
         return this.placa > kwotaDoPorownania; // po optymalziacji!!!
     }
 
     // zwraca kwotę podwyżki
-    public float obliczPodwyzke(float procentBazowyPodwyzki){
-        return (float) (this.placa * (procentBazowyPodwyzki/100 + this.liczbaDzieci*0.02 + (stanCywilny? 0.03:0.0) ));
+    public float obliczPodwyzke(float procentBazowyPodwyzki) {
+        return (float) (this.placa * (procentBazowyPodwyzki / 100 + this.liczbaDzieci * 0.02 + (stanCywilny ? 0.03 : 0.0)));
+    }
+
+    public Pracownik(String imie, String nazwisko, char plec, int nrDzialu, float placa, int wiek, int liczbaDzieci, boolean stanCywilny) {
+        this.imie = imie;
+        this.nazwisko = nazwisko;
+        this.plec = plec;
+        this.nrDzialu = nrDzialu;
+        this.placa = placa;
+        this.wiek = wiek;
+        this.liczbaDzieci = liczbaDzieci;
+        this.stanCywilny = stanCywilny;
     }
 
     public void setImie(String imie) {
@@ -59,6 +66,8 @@ public class Pracownik {
     public void setNazwisko(String nazwisko) {
         this.nazwisko = nazwisko;
     }
+
+    public String getImie() {return imie;}
 
     public char getPlec() {
         return plec;
