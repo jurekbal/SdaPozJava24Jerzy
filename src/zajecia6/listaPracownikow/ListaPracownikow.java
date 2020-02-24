@@ -147,7 +147,7 @@ public class ListaPracownikow {
         akcja = sc.nextLine();
         int nrOpcji = Integer.parseInt(akcja);
         if (nrOpcji < 2 || nrOpcji == 3 || nrOpcji > 8) {
-            System.out.println("Nieprawidłowa opcja! Wciśnij Enter aby wyjść do Menu G");
+            System.out.println("Nieprawidłowa opcja! Wciśnij Enter aby wyjść do Menu Głównego");
             sc.nextLine();
             return;
         }
@@ -157,19 +157,79 @@ public class ListaPracownikow {
             return;
         }
 
-        //TODO do optymalizacji i uzuzpełnienia
+        //TODO Edycja danych: kontrola wprowadzania, kontrola danych
         switch (nrOpcji) {
             case 2: {
-                System.out.println("Podaj nowe nazwisko [" + lista[nrPracDoEdycji].getNazwisko() + "]:");
+                System.out.print("Podaj nowe nazwisko [aktualnie: " + lista[nrPracDoEdycji].getNazwisko() + "]:");
                 String linia = sc.nextLine();
-
+                lista[nrPracDoEdycji].setNazwisko(kapitalka(linia));
+                System.out.println("Nazwisko pracownika nr " + nrPracDoEdycji + " zmieniono na: " + linia);
+                break;
             }
-
+            case 4: {
+                System.out.print("Podaj nr działu [aktualnie: " + lista[nrPracDoEdycji].getNrDzialu() + "]:");
+                lista[nrPracDoEdycji].setNrDzialu(Integer.parseInt(sc.nextLine()));
+                System.out.println("Numer działu zmieniono na: " + lista[nrPracDoEdycji].getNrDzialu());
+                break;
+            }
+            case 5 : {
+                System.out.print("Podaj nową płącę [aktualnie: " + lista[nrPracDoEdycji].getPlaca() + "]:");
+                lista[nrPracDoEdycji].setPlaca(Float.parseFloat(sc.nextLine()));
+                System.out.println("Płacę zmieniono na: " + lista[nrPracDoEdycji].getPlaca());
+                break;
+            }
+            case 6 : {
+                System.out.print("Podaj wiek [aktualnie: " + lista[nrPracDoEdycji].getWiek() + "]:");
+                lista[nrPracDoEdycji].setWiek(Integer.parseInt(sc.nextLine()));
+                System.out.println("Wiek zmieniono na: " + lista[nrPracDoEdycji].getWiek());
+                break;
+            }
+            case 7 : {
+                System.out.print("Podaj nową liczbę dzieci [aktualnie: "
+                        + lista[nrPracDoEdycji].getLiczbaDzieci() + "]:");
+                lista[nrPracDoEdycji].setLiczbaDzieci(Integer.parseInt(sc.nextLine()));
+                System.out.println("Liczbę dzieci zmieniono na: " + lista[nrPracDoEdycji].getLiczbaDzieci());
+                break;
+            }
+            case 8 : {
+                System.out.print("Podaj aktualny stan cywilny (W - wolny, Z - zajęty [obecnie: "
+                        + (lista[nrPracDoEdycji].isStanCywilny() ? "zajęty" : "wolny") +"]:");
+                char stanCywilnyChar = (sc.nextLine().toUpperCase().charAt(0));
+                lista[nrPracDoEdycji].setStanCywilny(stanCywilnyChar == 'Z');
+                System.out.println("Stan cywilny zmieniono na: "
+                        + (lista[nrPracDoEdycji].isStanCywilny() ? "zajęty" : "wolny"));
+                break;
+            }
         }
-        //TODO Realizacja edycji pól
-
+        System.out.println("Powrót do głównego menu - wciśnij Enter");
         sc.nextLine();
 
+    }
+
+    // funkcja 6
+    public void dodatkoweFunkcje(String wybor){
+        switch (wybor) {
+            case "1" : {
+                System.out.print("Podaj pensję progową: ");
+                float prog = Float.parseFloat(sc.nextLine());
+                int licznik = 0;
+                for (int i = 0; i < liczbaPracownikow; i++) {
+                    if (lista[i].getPlaca() >= prog) {
+                        licznik++;
+                    }
+                }
+                System.out.println("Liczba pracowników z płącą nie mniejszą niż " + prog + ": " + licznik);
+                System.out.println("Wciśnij Enter...");
+                sc.nextLine();
+                break;
+            }
+            case "q": case "e": {
+                break;
+            }
+            default:{
+                System.out.println("Nieprawidłowa opcja. Powrót do głównego menu.");
+            }
+        }
     }
 
     private String kapitalka(String line){

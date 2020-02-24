@@ -23,7 +23,7 @@ public class Main {
                     lista.dodajPracownika();
                     break;
                 }
-                case "3": case "6":case "7":{
+                case "3": case "7":{
                     System.out.println("Przepraszamy. Funkcja nie jest dostępna w tej wersji programu.");
                     break;
                 }
@@ -33,6 +33,13 @@ public class Main {
                 }
                 case "5": {
                     lista.edycjaDanych();
+                    break;
+                }
+                case "6": {
+                    menu.wyswietlPodmenu6();
+                    wyborMenu = menu.pobierzAkcjeOdUzytkownika();
+                    lista.dodatkoweFunkcje(wyborMenu);
+                    wyborMenu = "";
                     break;
                 }
                 case "q": case "e": {

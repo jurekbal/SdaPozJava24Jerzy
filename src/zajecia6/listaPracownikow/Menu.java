@@ -19,6 +19,14 @@ public class Menu {
         System.out.print("Opcja:");
     }
 
+    public void wyswietlPodmenu6(){
+        System.out.println("** Dodatkowe fukcje. Wybierz funkcję:");
+        System.out.println("1: Liczba pracowników z pensją nie mniejszą niż...");
+        //TODO Uzupełnić listę funkcji dodatkowych
+        System.out.println("e, q: powrót");
+        System.out.print("Wybór:");
+    }
+
     // z zajęć
     public String pobierzAkcjeOdUzytkownika() {
         Scanner sc = new Scanner(System.in);
