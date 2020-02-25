@@ -12,7 +12,7 @@ public class ListaPracownikow {
         Pracownik filip = new Pracownik("Filip", "Forszpaniak",
                 'M', 1, 200, 31, 0, true);
         Pracownik karol = new Pracownik("Karol", "Nowak",
-                'M', 2, 150, 26, 2, false);
+                'M', 1, 150, 26, 2, false);
 
         lista[liczbaPracownikow++] = filip;
         lista[liczbaPracownikow++] = karol;
@@ -207,29 +207,95 @@ public class ListaPracownikow {
     }
 
     // funkcja 6
-    public void dodatkoweFunkcje(String wybor){
-        switch (wybor) {
-            case "1" : {
-                System.out.print("Podaj pensję progową: ");
-                float prog = Float.parseFloat(sc.nextLine());
-                int licznik = 0;
-                for (int i = 0; i < liczbaPracownikow; i++) {
-                    if (lista[i].getPlaca() >= prog) {
-                        licznik++;
+    public void dodatkoweFunkcje(Menu menu){
+        String wybor = "";
+
+        while (!wybor.equals("q") && !wybor.equals("e")) {
+            menu.wyswietlPodmenu6();
+            wybor = menu.pobierzAkcjeOdUzytkownika();
+            switch (wybor) {
+                case "1": {
+                    System.out.print("Podaj pensję progową:");
+                    float prog = Float.parseFloat(sc.nextLine());
+                    int licznik = 0;
+                    for (int i = 0; i < liczbaPracownikow; i++) {
+                        if (lista[i].getPlaca() >= prog) {
+                            licznik++;
+                        }
                     }
+                    System.out.println("Liczba pracowników z płącą nie mniejszą niż " + prog + ": " + licznik);
+                    System.out.println("Wciśnij Enter...");
+                    sc.nextLine();
+                    break;
                 }
-                System.out.println("Liczba pracowników z płącą nie mniejszą niż " + prog + ": " + licznik);
-                System.out.println("Wciśnij Enter...");
-                sc.nextLine();
-                break;
-            }
-            case "q": case "e": {
-                break;
-            }
-            default:{
-                System.out.println("Nieprawidłowa opcja. Powrót do głównego menu.");
+                case "2": {
+                    System.out.print("Podaj numer działu:");
+                    int nrDzialu = Integer.parseInt(sc.nextLine());
+                    int licznik = 0;
+                    float suma = 0;
+                    for (int i = 0; i < liczbaPracownikow; i++) {
+                        if (lista[i].getNrDzialu() == nrDzialu) {
+                            licznik++;
+                            suma += lista[i].getPlaca();
+                        }
+                    }
+                    if (licznik == 0) {
+                        System.out.println("Nie ma nikogo w dziale nr " + nrDzialu);
+                        System.out.println("Wciśnij Enter...");
+                        sc.nextLine();
+                    } else {
+                        System.out.println("Średnia płaca w dziale nr " + nrDzialu + " wynosi: " + suma / licznik);
+                        System.out.println("Wciśnij Enter...");
+                        sc.nextLine();
+                    }
+                    break;
+                }
+                case "3": {
+                    float maxKobiety = 0;
+                    float maxMezczyzni = 0;
+                    for (int i = 0; i < liczbaPracownikow; i++) {
+                        if (lista[i].getPlec() == 'K') {
+                            if (lista[i].getPlaca() > maxKobiety) {
+                                maxKobiety = lista[i].getPlaca();
+                            }
+                        }
+                        if (lista[i].getPlec() == 'M') {
+                            if (lista[i].getPlaca() > maxMezczyzni) {
+                                maxMezczyzni = lista[i].getPlaca();
+                            }
+                        }
+                    }
+                    System.out.println("Maksymalne płace: Mężczyźni: " + maxMezczyzni + "; Kobiety: " + maxKobiety + ";");
+                    System.out.println("Wciśnij Enter...");
+                    sc.nextLine();
+                }
+                case "q":
+                case "e": {
+                    break;
+                }
+                default: {
+                    System.out.println("Nieprawidłowa opcja. Powrót do głównego menu.");
+                }
             }
         }
+    }
+
+    // funkcja 99
+    public void generuj() {
+        Generator generator = new Generator();
+        System.out.print("Ilu pracowników wygenerować?:");
+        int ileDodac = Integer.parseInt(sc.nextLine());
+        if (liczbaPracownikow + ileDodac > 100) {
+            ileDodac = 100 - liczbaPracownikow;
+        }
+        for (int i = liczbaPracownikow; i < liczbaPracownikow + ileDodac; i++) {
+            lista[i] = generator.generuj();
+        }
+        liczbaPracownikow+= ileDodac;
+        System.out.println("Wygenerowano " + ileDodac + " pracowników/a. Masz w bazie " + liczbaPracownikow +
+                " pracowników.");
+        System.out.println("Wciśnij Enter...");
+        sc.nextLine();
     }
 
     private String kapitalka(String line){

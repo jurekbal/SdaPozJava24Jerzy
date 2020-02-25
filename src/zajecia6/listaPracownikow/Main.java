@@ -36,10 +36,11 @@ public class Main {
                     break;
                 }
                 case "6": {
-                    menu.wyswietlPodmenu6();
-                    wyborMenu = menu.pobierzAkcjeOdUzytkownika();
-                    lista.dodatkoweFunkcje(wyborMenu);
-                    wyborMenu = "";
+                    lista.dodatkoweFunkcje(menu);
+                    break;
+                }
+                case "99" : {
+                    lista.generuj();
                     break;
                 }
                 case "q": case "e": {

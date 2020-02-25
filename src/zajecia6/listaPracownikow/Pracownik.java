@@ -36,7 +36,7 @@ public class Pracownik {
     }
 
     public boolean czyPensjaPowyzej(float kwotaDoPorownania) {
-        return this.placa > kwotaDoPorownania; // po optymalziacji!!!
+        return this.placa > kwotaDoPorownania;
     }
 
     // zwraca kwotę podwyżki
