@@ -6,10 +6,10 @@ public class Generator {
    
     private String[] imionaMeskie = {"Adam", "Bartosz", "Czesław", "Dariusz", "Edward", "Franciszek", "Grzegorz",
             "Henryk", "Igor", "Jerzy", "Karol", "Leszek", "Mariusz", "Orest", "Piotr", "Roman", "Stefan", "Tomasz",
-            "Waldemar", "Zenon"}; // 20 szt
+            "Waldemar", "Zenon"};
     private String[] imionaZenskie = {"Anna", "Beata", "Celina", "Daria", "Edyta", "Grażyna", "Hanna", "Iwona",
             "Joanna", "Karolina", "Lena", "Magdalena", "Nadia", "Olga", "Patrycja", "Roma", "Sandra", "Tamara",
-            "Urszula", "Wanda"}; // 20 szt
+            "Urszula", "Wanda"};
     private String[] nazwiskaMeskie = {"Nowak", "Kowalski", "Wójcik", "Kamiński", "Zieliński", "Woźniak", "Kozłowksi",
             "Wojciechowski", "Mazur", "Kaczmarek", "Grabowski", "Michalski", "Król", "Jabłoński", "Nowakowski",
             "Majewski", "Olszewski", "Malinowski", "Górski", "Nowicki"};
@@ -77,5 +77,4 @@ public class Generator {
     private boolean generujStanCywilny() {
         return random.nextBoolean();
     }
-
 }

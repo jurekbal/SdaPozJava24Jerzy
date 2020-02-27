@@ -69,7 +69,8 @@ public class ListaPracownikow {
             lista[liczbaPracownikow++] = pracownik;
 
         } else {
-            System.out.println("Błąd. Lista jest pełna.");
+            System.out.println("Błąd. Lista jest pełna. ");
+            nacisnijEnter();
         }
 
     }
@@ -126,7 +127,9 @@ public class ListaPracownikow {
         }
 
         if (liczbaPracownikow == 0) {
-            System.out.println("Lista jest pusta.");
+            System.out.print("Lista jest pusta. ");
+            nacisnijEnter();
+            return;
         }
 
         System.out.println("Podaj numer pracownika do edycji lub 'q' aby anulować:");
@@ -136,7 +139,7 @@ public class ListaPracownikow {
         }
         int nrPracDoEdycji = Integer.parseInt(akcja);
         if (nrPracDoEdycji >= liczbaPracownikow) {
-            System.out.println("Nieprawidłowy nr pracownika! Wciśnij Enter aby wyjść do Menu G");
+            System.out.println("Nieprawidłowy nr pracownika! Wciśnij Enter aby wyjść do Menu Głównego");
             sc.nextLine();
             return;
         }
@@ -152,8 +155,8 @@ public class ListaPracownikow {
             return;
         }
         if (nrOpcji == 2 && lista[nrPracDoEdycji].getPlec() != 'K'){
-            System.out.println("BŁĄD! Nazwisko można edytować tylko kobietom. Wciśnij Enter...");
-            sc.nextLine();
+            System.out.println("BŁĄD! Nazwisko można edytować tylko kobietom. ");
+            nacisnijEnter();
             return;
         }
 
@@ -224,8 +227,7 @@ public class ListaPracownikow {
                         }
                     }
                     System.out.println("Liczba pracowników z płącą nie mniejszą niż " + prog + ": " + licznik);
-                    System.out.println("Wciśnij Enter...");
-                    sc.nextLine();
+                    nacisnijEnter();
                     break;
                 }
                 case "2": {
@@ -241,12 +243,10 @@ public class ListaPracownikow {
                     }
                     if (licznik == 0) {
                         System.out.println("Nie ma nikogo w dziale nr " + nrDzialu);
-                        System.out.println("Wciśnij Enter...");
-                        sc.nextLine();
+                        nacisnijEnter();
                     } else {
                         System.out.println("Średnia płaca w dziale nr " + nrDzialu + " wynosi: " + suma / licznik);
-                        System.out.println("Wciśnij Enter...");
-                        sc.nextLine();
+                        nacisnijEnter();
                     }
                     break;
                 }
@@ -266,15 +266,89 @@ public class ListaPracownikow {
                         }
                     }
                     System.out.println("Maksymalne płace: Mężczyźni: " + maxMezczyzni + "; Kobiety: " + maxKobiety + ";");
-                    System.out.println("Wciśnij Enter...");
-                    sc.nextLine();
+                    nacisnijEnter();
+                    break;
+                }
+                case "4" : {
+                    int maxNrDzialu = 0;
+                    for (int i = 0; i < liczbaPracownikow; i++) {
+                        if (lista[i].getNrDzialu() > maxNrDzialu) {
+                            maxNrDzialu = lista[i].getNrDzialu();
+                        }
+                    }
+
+                    for (int nrDzialu = 0; nrDzialu <= maxNrDzialu; nrDzialu++) {
+                        int licznikM = 0;
+                        int licznikK = 0;
+                        float suma = 0;
+                        for (int j = 0; j < liczbaPracownikow; j++) {
+                            if (lista[j].getNrDzialu() == nrDzialu) {
+                                if (lista[j].getPlec() == 'M') {
+                                    licznikM++;
+                                }
+                                if (lista[j].getPlec() == 'K') {
+                                    licznikK++;
+                                }
+                                suma += lista[j].getPlaca();
+                            }
+                        }
+                        if (licznikK > 0 || licznikM > 0) {
+                            if (licznikK > licznikM) {
+                                System.out.println("W dziale " + nrDzialu + " jest więcej kobiet.");
+                            } else if (licznikM > licznikK) {
+                                System.out.println("W dziale " + nrDzialu + " jest więcej mężczyzn.");
+                            } else {
+                                System.out.println("W dziale " + nrDzialu + " jest tyle samo mężczyzn co kobiet.");
+                            }
+                            System.out.println("Średnia pensja w dziale " + nrDzialu + " wynosi: " +
+                                    (suma / (licznikM+licznikK)) );
+                            nacisnijEnter();
+                        }
+                    }
+                    break;
+                }
+                case "5" : {
+                    int licznikM = 0;
+                    int licznikK = 0;
+                    float sumaK = 0;
+                    float sumaM = 0;
+                    for (int i = 0; i < liczbaPracownikow; i++) {
+                        if (lista[i].getPlec() == 'M') {
+                            licznikM++;
+                            sumaM += lista[i].getPlaca();
+                        }
+                        if (lista[i].getPlec() == 'K') {
+                            licznikK++;
+                            sumaK += lista[i].getPlaca();
+                        }
+                    }
+                    if (licznikM > 0 && licznikK > 0) {
+                        System.out.println("Stosunek średniej płacy kobiet do średniej płący mężczyzn wynosi: " +
+                                ((sumaK / licznikK) / (sumaM / licznikM)));
+                    } else if (licznikM == 0 && licznikK == 0){
+                        System.out.println("W bazie nie ma pracowników!");
+                    } else if (licznikM == 0) {
+                        System.out.println("W bazie nie ma mężczyzn!");
+                    } else {
+                        System.out.println("W bazie nie ma kobiet!");
+                    }
+                    nacisnijEnter();
+                    break;
+                }
+                case "6" : {
+                    for (int i = 0; i < liczbaPracownikow; i++) {
+                        lista[i].setPlaca( lista[i].getPlaca() + lista[i].obliczPodwyzke(10.0f) );
+                    }
+                    nacisnijEnter();
+                    break;
                 }
                 case "q":
                 case "e": {
                     break;
                 }
                 default: {
-                    System.out.println("Nieprawidłowa opcja. Powrót do głównego menu.");
+                    System.out.print("Nieprawidłowa opcja. ");
+                    nacisnijEnter();
                 }
             }
         }
@@ -308,5 +382,10 @@ public class ListaPracownikow {
         } else {
             return "";
         }
+    }
+
+    private void nacisnijEnter() {
+        System.out.println("Naciśnij Enter...");
+        sc.nextLine();
     }
 }

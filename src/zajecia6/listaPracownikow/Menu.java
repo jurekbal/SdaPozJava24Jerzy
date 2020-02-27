@@ -7,7 +7,8 @@ import java.util.Scanner;
 public class Menu {
 
     public void wyswietlMenuGlowne(){
-        System.out.println("### Menu głóne ### Wybierz opcję:");
+        System.out.println("### MENU GŁÓWNE ###\n");
+        System.out.println("Wybierz opcję:");
         System.out.println("1: Wyświetl wszystkich pracowników");
         System.out.println("2: Dodaj pracownika");
         System.out.println("3: Eksport do pliku");
@@ -25,6 +26,9 @@ public class Menu {
         System.out.println("1: Liczba pracowników z pensją nie mniejszą niż...");
         System.out.println("2: Średnia płaca w dziale");
         System.out.println("3: Największe pensje wśród kobiet / mężczyzn");
+        System.out.println("4: Wyświetlanie wszystkich działow i dodatkowych informacji");
+        System.out.println("5: Stosunek średniej płacy mężczyzn do średniej płacy kobiet");
+        System.out.println("6: Zwieksz pensje wszystkim o 10%, plus premie za dzieci i stan cywilny");
         //TODO Uzupełnić listę funkcji dodatkowych
         System.out.println("e, q: powrót");
         System.out.print("Wybór:");
