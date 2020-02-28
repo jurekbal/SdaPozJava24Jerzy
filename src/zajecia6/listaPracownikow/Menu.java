@@ -29,7 +29,9 @@ public class Menu {
         System.out.println("4: Wyświetlanie wszystkich działow i dodatkowych informacji");
         System.out.println("5: Stosunek średniej płacy mężczyzn do średniej płacy kobiet");
         System.out.println("6: Zwieksz pensje wszystkim o 10%, plus premie za dzieci i stan cywilny");
-        //TODO Uzupełnić listę funkcji dodatkowych
+        System.out.println("7: Zwiększ pensje wszystkim o podaną kwotę");
+        System.out.println("8: Sortuj bazę według nazwiska");
+        System.out.println("9: Sortuj bazę według pensji");
         System.out.println("e, q: powrót");
         System.out.print("Wybór:");
     }

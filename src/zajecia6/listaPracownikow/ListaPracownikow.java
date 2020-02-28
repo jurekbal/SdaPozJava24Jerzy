@@ -339,6 +339,33 @@ public class ListaPracownikow {
                     for (int i = 0; i < liczbaPracownikow; i++) {
                         lista[i].setPlaca( lista[i].getPlaca() + lista[i].obliczPodwyzke(10.0f) );
                     }
+                    System.out.println("Pensje zwiększono.");
+                    nacisnijEnter();
+                    break;
+                }
+                case "7" : {
+                    System.out.print("Zwiększanie pensji wszystkim. Podaj kwotę:");
+                    float kwotaPodwyzki = Float.parseFloat(sc.nextLine());
+                    float stosunekPodwyzekM = podwyzkaKwotowa(kwotaPodwyzki, 'M');
+                    System.out.println("Stosunek podwyżek dla mężczyzn wyniósł: " + stosunekPodwyzekM);
+                    float stosunekPodwyzekK = podwyzkaKwotowa(kwotaPodwyzki, 'K');
+                    System.out.println("Stosunek podwyżek dla kobiet wyniósł: " + stosunekPodwyzekK);
+                    nacisnijEnter();
+                    break;
+                }
+                case "8" : {
+                    char kierunek;
+                    do {
+                        System.out.print("Sortowanie według nazwiska. Podaj kierunek - [r]osnąco / [m]alejąco:");
+                        String s = sc.nextLine();
+                        if (s.isEmpty()) {
+                            kierunek = 'r';
+                        } else {
+                            kierunek = s.toLowerCase().charAt(0);
+                        }
+                    } while (kierunek != 'r' && kierunek != 'm');
+                    sortujPoNazwisku(kierunek == 'r');
+                    System.out.println(("Posortowano " + ((kierunek == 'r') ? "rosnąco" : "malejąco")));
                     nacisnijEnter();
                     break;
                 }
@@ -350,6 +377,35 @@ public class ListaPracownikow {
                     System.out.print("Nieprawidłowa opcja. ");
                     nacisnijEnter();
                 }
+            }
+        }
+    }
+
+    private void sortujPoNazwisku(boolean rosnaco) {
+        //TODO Sortowanie po kojelnych literach nazwiska
+        Pracownik pomocniczy;
+        int indeks;
+        int wartoscMaxMin;
+        for (int i = 0; i < liczbaPracownikow - 1; i++) {
+            wartoscMaxMin = (int) lista[i].getNazwisko().charAt(0);
+            indeks = i;
+            for (int j = i + 1; j < liczbaPracownikow; j++) {
+                if (rosnaco) {
+                    if ((int) lista[j].getNazwisko().charAt(0) < wartoscMaxMin) {
+                        indeks = j;
+                        wartoscMaxMin = (int) lista[j].getNazwisko().charAt(0);
+                    }
+                } else {
+                    if ((int) lista[j].getNazwisko().charAt(0) > wartoscMaxMin) {
+                        indeks = j;
+                        wartoscMaxMin = (int) lista[j].getNazwisko().charAt(0);
+                    }
+                }
+            }
+            if (indeks != i) {
+                pomocniczy = lista[i];
+                lista[i] = lista[indeks];
+                lista[indeks] = pomocniczy;
             }
         }
     }
@@ -387,5 +443,21 @@ public class ListaPracownikow {
     private void nacisnijEnter() {
         System.out.println("Naciśnij Enter...");
         sc.nextLine();
+    }
+
+    private float podwyzkaKwotowa(float kwota, char plec) {
+        float sumaPlacBazowych = 0;
+        float sumaPlacPoPodwyzce = 0;
+        float sumaPodwyzek = 0;
+        for (int i = 0; i < liczbaPracownikow; i++) {
+            if (lista[i].getPlec() == plec) {
+                sumaPlacBazowych+= lista[i].getPlaca();
+                lista[i].setPlaca(lista[i].getPlaca() + kwota);
+                sumaPlacPoPodwyzce+= lista[i].getPlaca();
+                sumaPodwyzek+= kwota;
+            }
+        }
+        System.out.println("Suma podwyżek dla " + (plec == 'M' ? "mężczyzn " : "kobiet ") + "wyniosła: " + sumaPodwyzek);
+        return ( (sumaPlacBazowych == 0) ? 0.0f : (sumaPlacPoPodwyzce / sumaPlacBazowych) );
     }
 }
