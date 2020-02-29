@@ -369,6 +369,22 @@ public class ListaPracownikow {
                     nacisnijEnter();
                     break;
                 }
+                case "9" : {
+                    char kierunek;
+                    do {
+                        System.out.print("Sortowanie według pensji. Podaj kierunek - [r]osnąco / [m]alejąco:");
+                        String s = sc.nextLine();
+                        if (s.isEmpty()) {
+                            kierunek = 'r';
+                        } else {
+                            kierunek = s.toLowerCase().charAt(0);
+                        }
+                    } while (kierunek != 'r' && kierunek != 'm');
+                    sortujWgPensji(kierunek == 'r');
+                    System.out.println(("Posortowano " + ((kierunek == 'r') ? "rosnąco" : "malejąco")));
+                    nacisnijEnter();
+                    break;
+                }
                 case "q":
                 case "e": {
                     break;
@@ -381,32 +397,15 @@ public class ListaPracownikow {
         }
     }
 
-    private void sortujPoNazwisku(boolean rosnaco) {
-        //TODO Sortowanie po kojelnych literach nazwiska
-        Pracownik pomocniczy;
-        int indeks;
-        int wartoscMaxMin;
-        for (int i = 0; i < liczbaPracownikow - 1; i++) {
-            wartoscMaxMin = (int) lista[i].getNazwisko().charAt(0);
-            indeks = i;
-            for (int j = i + 1; j < liczbaPracownikow; j++) {
-                if (rosnaco) {
-                    if ((int) lista[j].getNazwisko().charAt(0) < wartoscMaxMin) {
-                        indeks = j;
-                        wartoscMaxMin = (int) lista[j].getNazwisko().charAt(0);
-                    }
-                } else {
-                    if ((int) lista[j].getNazwisko().charAt(0) > wartoscMaxMin) {
-                        indeks = j;
-                        wartoscMaxMin = (int) lista[j].getNazwisko().charAt(0);
-                    }
-                }
-            }
-            if (indeks != i) {
-                pomocniczy = lista[i];
-                lista[i] = lista[indeks];
-                lista[indeks] = pomocniczy;
-            }
+    private String kapitalka(String line){
+        if (line.length() > 0) {
+            line = line.toLowerCase();
+            String firstChar = line.substring(0, 1);
+            line = line.substring(1);
+            firstChar = firstChar.toUpperCase();
+            return firstChar + line;
+        } else {
+            return "";
         }
     }
 
@@ -428,21 +427,61 @@ public class ListaPracownikow {
         sc.nextLine();
     }
 
-    private String kapitalka(String line){
-        if (line.length() > 0) {
-            line = line.toLowerCase();
-            String firstChar = line.substring(0, 1);
-            line = line.substring(1);
-            firstChar = firstChar.toUpperCase();
-            return firstChar + line;
-        } else {
-            return "";
+    private void sortujPoNazwisku(boolean rosnaco) {
+        //TODO Sortowanie po kojelnych literach nazwiska
+        Pracownik pomocniczy;
+        int indeks;
+        int wartoscMaxMin;
+        for (int i = 0; i < liczbaPracownikow - 1; i++) {
+            wartoscMaxMin = lista[i].getNazwisko().charAt(0);
+            indeks = i;
+            for (int j = i + 1; j < liczbaPracownikow; j++) {
+                if (rosnaco) {
+                    if ((int) lista[j].getNazwisko().charAt(0) < wartoscMaxMin) {
+                        indeks = j;
+                        wartoscMaxMin = lista[j].getNazwisko().charAt(0);
+                    }
+                } else {
+                    if ((int) lista[j].getNazwisko().charAt(0) > wartoscMaxMin) {
+                        indeks = j;
+                        wartoscMaxMin = lista[j].getNazwisko().charAt(0);
+                    }
+                }
+            }
+            if (indeks != i) {
+                pomocniczy = lista[i];
+                lista[i] = lista[indeks];
+                lista[indeks] = pomocniczy;
+            }
         }
     }
 
-    private void nacisnijEnter() {
-        System.out.println("Naciśnij Enter...");
-        sc.nextLine();
+    private void sortujWgPensji(boolean rosnaco) {
+        Pracownik pomocniczy;
+        int indeks;
+        float wartoscMaxMin;
+        for (int i = 0; i < liczbaPracownikow - 1; i++) {
+            wartoscMaxMin = lista[i].getPlaca();
+            indeks = i;
+            for (int j = i + 1; j < liczbaPracownikow; j++) {
+                if (rosnaco) {
+                    if ( lista[j].getPlaca() < wartoscMaxMin) {
+                        indeks = j;
+                        wartoscMaxMin = lista[j].getPlaca();
+                    }
+                } else {
+                    if ((int) lista[j].getPlaca() > wartoscMaxMin) {
+                        indeks = j;
+                        wartoscMaxMin = lista[j].getPlaca();
+                    }
+                }
+            }
+            if (indeks != i) {
+                pomocniczy = lista[i];
+                lista[i] = lista[indeks];
+                lista[indeks] = pomocniczy;
+            }
+        }
     }
 
     private float podwyzkaKwotowa(float kwota, char plec) {
@@ -459,5 +498,10 @@ public class ListaPracownikow {
         }
         System.out.println("Suma podwyżek dla " + (plec == 'M' ? "mężczyzn " : "kobiet ") + "wyniosła: " + sumaPodwyzek);
         return ( (sumaPlacBazowych == 0) ? 0.0f : (sumaPlacPoPodwyzce / sumaPlacBazowych) );
+    }
+
+    private void nacisnijEnter() {
+        System.out.println("Naciśnij Enter...");
+        sc.nextLine();
     }
 }
