@@ -1,2 +1,2 @@
 29-02-2020
-Tematyka zajęć: Data Czas, ...
+Tematyka zajęć: Data Czas, RegEx;
