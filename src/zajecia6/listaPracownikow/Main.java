@@ -23,8 +23,8 @@ public class Main {
                     lista.dodajPracownika();
                     break;
                 }
-                case "3": case "7":{
-                    System.out.println("Przepraszamy. Funkcja nie jest dostępna w tej wersji programu.");
+                case "3":{
+                    lista.eksport();
                     break;
                 }
                 case "4": {
@@ -37,6 +37,10 @@ public class Main {
                 }
                 case "6": {
                     lista.dodatkoweFunkcje(menu);
+                    break;
+                }
+                case "7":{
+                    System.out.println("Przepraszamy. Funkcja nie jest dostępna w tej wersji programu.");
                     break;
                 }
                 case "99" : {

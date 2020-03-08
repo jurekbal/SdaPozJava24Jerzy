@@ -1,11 +1,14 @@
 package zajecia6.listaPracownikow;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.util.Scanner;
 
 public class ListaPracownikow {
     private Pracownik[] lista = new Pracownik[100];
     private int liczbaPracownikow = 0;
     Scanner sc = new Scanner(System.in);
+    private final String BASE_PATH = "D:\\javafiles\\";
 
     // konstruktor wklepuje na stałe dwóch pracownikow do celów testowych
     public ListaPracownikow() {
@@ -77,7 +80,13 @@ public class ListaPracownikow {
 
     // funckja 3
     public void eksport() {
-        // TODO implemantacja funkcji 3
+        System.out.println("Eksport do pliku tekstowego. Podaj nazwę pliku:");
+        String fileName = sc.nextLine();
+        try {
+            exportAllToFile(fileName);
+        } catch (Exception e) {
+            System.err.println(e);
+        }
     }
 
     // funkcja 4
@@ -503,5 +512,21 @@ public class ListaPracownikow {
     private void nacisnijEnter() {
         System.out.println("Naciśnij Enter...");
         sc.nextLine();
+    }
+
+    private void exportAllToFile(String fileName) throws Exception {
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(BASE_PATH + fileName));
+        for (int i = 0; i < liczbaPracownikow; i++) {
+            bufferedWriter.write(lista[i].getNazwisko() +
+                    " " + lista[i].getImie() +
+                    " " + lista[i].getPlec() +
+                    " " + lista[i].getNrDzialu() +
+                    " " + lista[i].getPlaca() +
+                    " " + lista[i].getWiek() +
+                    " " + lista[i].getLiczbaDzieci() +
+                    System.lineSeparator()
+            );
+        }
+        bufferedWriter.close();
     }
 }

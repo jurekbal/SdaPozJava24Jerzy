@@ -1,3 +1,4 @@
 2020-03-01
 trener Krzysztof Michalak
 Testowanie oprogramowania
+zob. projekt: tdd

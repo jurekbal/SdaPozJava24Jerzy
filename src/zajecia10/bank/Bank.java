@@ -28,9 +28,22 @@ public class Bank {
         System.out.println(account01);
         System.out.println(account02);
         System.out.println(account03);
-
         System.out.println(persCli01);
 
+        System.out.println("************************************");
+        System.out.println("account02 ballance before transfer: " + account02.getBallance());
+        try {
+            //account01.withdraw(-5);
+            //account02.withdraw(1000);
+            //account01.transfer(account02, -4);
+            account01.transfer(account02, 1000);
+            //account01.transfer(account02, 350);
+        } catch (InsufficientBalanceException | NegativeWithdrawException e) {
+            System.out.println("Błąd: " + e.getMessage());
+            //e.printStackTrace();
+        } finally {
+            System.out.println("account02 ballance after transfer: " + account02.getBallance());
+        }
 
     }
 }

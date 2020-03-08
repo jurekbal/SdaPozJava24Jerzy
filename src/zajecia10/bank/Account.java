@@ -19,12 +19,16 @@ public class Account {
         return false;
     }
 
-    public boolean withdraw(long amount) {
+    public boolean withdraw(long amount) throws NegativeWithdrawException, InsufficientBalanceException {
+        if (amount < 0) {
+            throw new NegativeWithdrawException("Próba wypłaty ujemnej wartości:" + amount);
+        }
         if (canWithdraw(amount)) {
             this.ballance -= amount;
             return true;
+        }  else {
+            throw new InsufficientBalanceException("Withdraw rejected");
         }
-        return false;
     }
 
     public long getBallance() {
@@ -35,13 +39,18 @@ public class Account {
         return client.getName();
     }
 
-    public boolean transfer(Account target, long amount) {
+    public boolean transfer(Account target, long amount)
+            throws NegativeWithdrawException, InsufficientBalanceException {
+        if (amount < 0) {
+            throw new NegativeWithdrawException("Próba wypłaty ujemnej wartości:" + amount);
+        }
         if (canWithdraw(amount)) {
             this.ballance -= amount;
             target.ballance += amount;
             return true;
+        } else {
+            throw new InsufficientBalanceException("Insufficient ballance. Transfer rejected");
         }
-        return false;
     }
 
     @Override
@@ -55,6 +64,6 @@ public class Account {
     }
 
     private boolean canWithdraw(long amount) {
-        return amount >= this.ballance;
+        return amount <= this.ballance;
     }
 }

@@ -6,15 +6,18 @@ public class Square extends Rectangle {
         return super.getEdgesNum();
     }
 
-    @Override
-    public double getArea() {
-        return super.getArea();
-    }
+    // nie potrzeba poniższyc metod bo i tak są dziedziczone z klasy Rectangle
 
-    @Override
-    public double getPerimrter() {
-        return super.getPerimrter();
-    }
+//    @Override
+//    public double getArea() {
+//        return super.getArea();
+//    }
+//
+//
+//    @Override
+//    public double getPerimrter() {
+//        return super.getPerimrter();
+//    }
 
     public Square(double edge) {
         super(edge, edge);

@@ -18,7 +18,14 @@ public class Calculator {
 
     private void printShapes() {
         for (Shape s: shapes) {
-            System.out.println(s.getClass().getName() + " area: " + s.getArea() + " perimeter: " + s.getPerimrter());
+            if (s != null) {
+                System.out.println(
+                        s.getClass().getName() +
+                        String.format(" area: %.2f perimeter: %.2f", s.getArea(), s.getPerimrter() )
+                );
+            } else {
+                System.out.println("NULL");
+            }
         }
     }
 
@@ -60,8 +67,14 @@ public class Calculator {
         double edgeA = random.nextDouble() * 10;
         double edgeB = random.nextDouble() * 10;
         double edgeC = random.nextDouble() * 10;
-        double heightA = random.nextDouble() * 10;
-        return new Triangle(edgeA,edgeB,edgeC,heightA);
+        //double heightA = random.nextDouble() * 10;
+        try {
+            return new Triangle(edgeA,edgeB,edgeC);
+        } catch (InvalidTriangleException e) {
+            System.out.println(e.getMessage());
+            System.out.println("Generuję ponownie...");
+            return getRandomTriangle();
+        }
     }
 
     private Shape getRandomCircle() {
@@ -76,8 +89,8 @@ public class Calculator {
         System.out.println("Circle area: " + circle.getArea());
         System.out.println("Circle perimeter: " + circle.getPerimrter());
 
-        double edgeA = 10L;
-        double edgeB = 20L;
+        double edgeA = 10.0;
+        double edgeB = 15.0;
         Rectangle rectangle = new Rectangle(edgeA, edgeB);
         System.out.println("Rectagle edge A: " + edgeA);
         System.out.println("Rectagle edge B: " + edgeB);
@@ -91,12 +104,22 @@ public class Calculator {
         System.out.println("Square perimeter: " + square.getPerimrter());
         System.out.println("Square edges#: "+ square.getEdgesNum());
 
-        double edgeC = 30;
-        double height = 10;
-        Triangle triangle = new Triangle(edgeA, edgeB, edgeC, height);
-        System.out.println("Triangle:");
-        System.out.println("Triangle area: " + triangle.getArea());
-        System.out.println("Triangle perimeter: " + triangle.getPerimrter());
-        System.out.println("Triangle edges#: "+ triangle.getEdgesNum());
+        double edgeC = 10.0;
+       // double height = 10;
+        Triangle triangle;
+        try {
+            triangle = new Triangle(edgeA, edgeB, edgeC);
+        } catch (InvalidTriangleException e){
+            System.out.println("Błąd w testCode(): " + e.getMessage());
+            triangle = null;
+        }
+
+//        Triangle triangle = new Triangle(edgeA, edgeB, edgeC,height);
+        if (triangle != null) {
+            System.out.println("Triangle:");
+            System.out.println("Triangle area: " + triangle.getArea());
+            System.out.println("Triangle perimeter: " + triangle.getPerimrter());
+            System.out.println("Triangle edges#: "+ triangle.getEdgesNum());
+        }
     }
 }
