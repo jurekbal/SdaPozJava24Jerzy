@@ -13,8 +13,8 @@ public class CesarEncryptor {
         FileWriter outputStream = null;
 
         try {
-            inputStream = new FileReader("test.txt");
-            outputStream = new FileWriter("encrypted_test.txt");
+            inputStream = new FileReader("iofiles\\test.txt");
+            outputStream = new FileWriter("iofiles\\encrypted_test.txt");
 
             int c;
             while ((c = inputStream.read()) != -1) {
