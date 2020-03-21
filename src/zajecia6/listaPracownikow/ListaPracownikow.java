@@ -8,18 +8,11 @@ public class ListaPracownikow {
     private Pracownik[] lista = new Pracownik[100];
     private int liczbaPracownikow = 0;
     Scanner sc = new Scanner(System.in);
-    private final String BASE_PATH = "D:\\javafiles\\";
+    private final String BASE_PATH = System.getProperty("user.home") + "\\Dysk Google\\Kurs Java\\files\\";
 
-    // konstruktor wklepuje na stałe dwóch pracownikow do celów testowych
+    // konstruktor uruchamia generator do celów testowych
     public ListaPracownikow() {
-        Pracownik filip = new Pracownik("Filip", "Forszpaniak",
-                'M', 1, 200, 31, 0, true);
-        Pracownik karol = new Pracownik("Karol", "Nowak",
-                'M', 1, 150, 26, 2, false);
-
-        lista[liczbaPracownikow++] = filip;
-        lista[liczbaPracownikow++] = karol;
-
+        generujPracownikow();
     }
 
     // funkcja 1
@@ -124,7 +117,6 @@ public class ListaPracownikow {
 
     }
 
-    // funkcja 5
     public void edycjaDanych() {
         System.out.println("*** Edycja danych pracowników ***");
         System.out.println("Liczba pracowników w bazie: " + liczbaPracownikow);
@@ -215,211 +207,9 @@ public class ListaPracownikow {
         }
         System.out.println("Powrót do głównego menu - wciśnij Enter");
         sc.nextLine();
-
     }
 
-    // funkcja 6
-    public void dodatkoweFunkcje(Menu menu){
-        String wybor = "";
-
-        while (!wybor.equals("q") && !wybor.equals("e")) {
-            menu.wyswietlPodmenu6();
-            wybor = menu.pobierzAkcjeOdUzytkownika();
-            switch (wybor) {
-                case "1": {
-                    System.out.print("Podaj pensję progową:");
-                    float prog = Float.parseFloat(sc.nextLine());
-                    int licznik = 0;
-                    for (int i = 0; i < liczbaPracownikow; i++) {
-                        if (lista[i].getPlaca() >= prog) {
-                            licznik++;
-                        }
-                    }
-                    System.out.println("Liczba pracowników z płącą nie mniejszą niż " + prog + ": " + licznik);
-                    nacisnijEnter();
-                    break;
-                }
-                case "2": {
-                    System.out.print("Podaj numer działu:");
-                    int nrDzialu = Integer.parseInt(sc.nextLine());
-                    int licznik = 0;
-                    float suma = 0;
-                    for (int i = 0; i < liczbaPracownikow; i++) {
-                        if (lista[i].getNrDzialu() == nrDzialu) {
-                            licznik++;
-                            suma += lista[i].getPlaca();
-                        }
-                    }
-                    if (licznik == 0) {
-                        System.out.println("Nie ma nikogo w dziale nr " + nrDzialu);
-                        nacisnijEnter();
-                    } else {
-                        System.out.println("Średnia płaca w dziale nr " + nrDzialu + " wynosi: " + suma / licznik);
-                        nacisnijEnter();
-                    }
-                    break;
-                }
-                case "3": {
-                    float maxKobiety = 0;
-                    float maxMezczyzni = 0;
-                    for (int i = 0; i < liczbaPracownikow; i++) {
-                        if (lista[i].getPlec() == 'K') {
-                            if (lista[i].getPlaca() > maxKobiety) {
-                                maxKobiety = lista[i].getPlaca();
-                            }
-                        }
-                        if (lista[i].getPlec() == 'M') {
-                            if (lista[i].getPlaca() > maxMezczyzni) {
-                                maxMezczyzni = lista[i].getPlaca();
-                            }
-                        }
-                    }
-                    System.out.println("Maksymalne płace: Mężczyźni: " + maxMezczyzni + "; Kobiety: " + maxKobiety + ";");
-                    nacisnijEnter();
-                    break;
-                }
-                case "4" : {
-                    int maxNrDzialu = 0;
-                    for (int i = 0; i < liczbaPracownikow; i++) {
-                        if (lista[i].getNrDzialu() > maxNrDzialu) {
-                            maxNrDzialu = lista[i].getNrDzialu();
-                        }
-                    }
-
-                    for (int nrDzialu = 0; nrDzialu <= maxNrDzialu; nrDzialu++) {
-                        int licznikM = 0;
-                        int licznikK = 0;
-                        float suma = 0;
-                        for (int j = 0; j < liczbaPracownikow; j++) {
-                            if (lista[j].getNrDzialu() == nrDzialu) {
-                                if (lista[j].getPlec() == 'M') {
-                                    licznikM++;
-                                }
-                                if (lista[j].getPlec() == 'K') {
-                                    licznikK++;
-                                }
-                                suma += lista[j].getPlaca();
-                            }
-                        }
-                        if (licznikK > 0 || licznikM > 0) {
-                            if (licznikK > licznikM) {
-                                System.out.println("W dziale " + nrDzialu + " jest więcej kobiet.");
-                            } else if (licznikM > licznikK) {
-                                System.out.println("W dziale " + nrDzialu + " jest więcej mężczyzn.");
-                            } else {
-                                System.out.println("W dziale " + nrDzialu + " jest tyle samo mężczyzn co kobiet.");
-                            }
-                            System.out.println("Średnia pensja w dziale " + nrDzialu + " wynosi: " +
-                                    (suma / (licznikM+licznikK)) );
-                            nacisnijEnter();
-                        }
-                    }
-                    break;
-                }
-                case "5" : {
-                    int licznikM = 0;
-                    int licznikK = 0;
-                    float sumaK = 0;
-                    float sumaM = 0;
-                    for (int i = 0; i < liczbaPracownikow; i++) {
-                        if (lista[i].getPlec() == 'M') {
-                            licznikM++;
-                            sumaM += lista[i].getPlaca();
-                        }
-                        if (lista[i].getPlec() == 'K') {
-                            licznikK++;
-                            sumaK += lista[i].getPlaca();
-                        }
-                    }
-                    if (licznikM > 0 && licznikK > 0) {
-                        System.out.println("Stosunek średniej płacy kobiet do średniej płący mężczyzn wynosi: " +
-                                ((sumaK / licznikK) / (sumaM / licznikM)));
-                    } else if (licznikM == 0 && licznikK == 0){
-                        System.out.println("W bazie nie ma pracowników!");
-                    } else if (licznikM == 0) {
-                        System.out.println("W bazie nie ma mężczyzn!");
-                    } else {
-                        System.out.println("W bazie nie ma kobiet!");
-                    }
-                    nacisnijEnter();
-                    break;
-                }
-                case "6" : {
-                    for (int i = 0; i < liczbaPracownikow; i++) {
-                        lista[i].setPlaca( lista[i].getPlaca() + lista[i].obliczPodwyzke(10.0f) );
-                    }
-                    System.out.println("Pensje zwiększono.");
-                    nacisnijEnter();
-                    break;
-                }
-                case "7" : {
-                    System.out.print("Zwiększanie pensji wszystkim. Podaj kwotę:");
-                    float kwotaPodwyzki = Float.parseFloat(sc.nextLine());
-                    float stosunekPodwyzekM = podwyzkaKwotowa(kwotaPodwyzki, 'M');
-                    System.out.println("Stosunek podwyżek dla mężczyzn wyniósł: " + stosunekPodwyzekM);
-                    float stosunekPodwyzekK = podwyzkaKwotowa(kwotaPodwyzki, 'K');
-                    System.out.println("Stosunek podwyżek dla kobiet wyniósł: " + stosunekPodwyzekK);
-                    nacisnijEnter();
-                    break;
-                }
-                case "8" : {
-                    char kierunek;
-                    do {
-                        System.out.print("Sortowanie według nazwiska. Podaj kierunek - [r]osnąco / [m]alejąco:");
-                        String s = sc.nextLine();
-                        if (s.isEmpty()) {
-                            kierunek = 'r';
-                        } else {
-                            kierunek = s.toLowerCase().charAt(0);
-                        }
-                    } while (kierunek != 'r' && kierunek != 'm');
-                    sortujPoNazwisku(kierunek == 'r');
-                    System.out.println(("Posortowano " + ((kierunek == 'r') ? "rosnąco" : "malejąco")));
-                    nacisnijEnter();
-                    break;
-                }
-                case "9" : {
-                    char kierunek;
-                    do {
-                        System.out.print("Sortowanie według pensji. Podaj kierunek - [r]osnąco / [m]alejąco:");
-                        String s = sc.nextLine();
-                        if (s.isEmpty()) {
-                            kierunek = 'r';
-                        } else {
-                            kierunek = s.toLowerCase().charAt(0);
-                        }
-                    } while (kierunek != 'r' && kierunek != 'm');
-                    sortujWgPensji(kierunek == 'r');
-                    System.out.println(("Posortowano " + ((kierunek == 'r') ? "rosnąco" : "malejąco")));
-                    nacisnijEnter();
-                    break;
-                }
-                case "q":
-                case "e": {
-                    break;
-                }
-                default: {
-                    System.out.print("Nieprawidłowa opcja. ");
-                    nacisnijEnter();
-                }
-            }
-        }
-    }
-
-    private String kapitalka(String line){
-        if (line.length() > 0) {
-            line = line.toLowerCase();
-            String firstChar = line.substring(0, 1);
-            line = line.substring(1);
-            firstChar = firstChar.toUpperCase();
-            return firstChar + line;
-        } else {
-            return "";
-        }
-    }
-
-    // funkcja 99
-    public void generuj() {
+    public void generujPracownikow() {
         Generator generator = new Generator();
         System.out.print("Ilu pracowników wygenerować?:");
         int ileDodac = Integer.parseInt(sc.nextLine());
@@ -436,31 +226,257 @@ public class ListaPracownikow {
         sc.nextLine();
     }
 
-    private void sortujPoNazwisku(boolean rosnaco) {
-        //TODO Sortowanie po kojelnych literach nazwiska
-        Pracownik pomocniczy;
-        int indeks;
-        int wartoscMaxMin;
-        for (int i = 0; i < liczbaPracownikow - 1; i++) {
-            wartoscMaxMin = lista[i].getNazwisko().charAt(0);
-            indeks = i;
-            for (int j = i + 1; j < liczbaPracownikow; j++) {
-                if (rosnaco) {
-                    if ((int) lista[j].getNazwisko().charAt(0) < wartoscMaxMin) {
-                        indeks = j;
-                        wartoscMaxMin = lista[j].getNazwisko().charAt(0);
-                    }
-                } else {
-                    if ((int) lista[j].getNazwisko().charAt(0) > wartoscMaxMin) {
-                        indeks = j;
-                        wartoscMaxMin = lista[j].getNazwisko().charAt(0);
-                    }
+    public void dodatkoweFunkcje(Menu menu){
+        String wybor = "";
+
+        while (!wybor.equals("q") && !wybor.equals("e")) {
+            menu.wyswietlPodmenu6();
+            wybor = menu.pobierzAkcjeOdUzytkownika();
+            switch (wybor) {
+                case "1": {
+                    liczbaPracownikowPowPensji();
+                    break;
+                }
+                case "2": {
+                    sredniaPlacaWDziale();
+                    break;
+                }
+                case "3": {
+                    najwiekszePlaceWgPlci();
+                    break;
+                }
+                case "4" : {
+                    statystykaDzialow();
+                    break;
+                }
+                case "5" : {
+                    stosunekSrednichPlacKobietMezczyzn();
+                    break;
+                }
+                case "6" : {
+                    zwiekszPensjeO_10prc();
+                    break;
+                }
+                case "7" : {
+                    zwiekszPensjeOKwote();
+                    break;
+                }
+                case "8" : {
+                    sortujWgNazwiska();
+                    break;
+                }
+                case "9" : {
+                    sortujWgPensji();
+                    break;
+                }
+                case "q":
+                case "e": {
+                    break;
+                }
+                default: {
+                    System.out.print("Nieprawidłowa opcja. ");
+                    nacisnijEnter();
                 }
             }
-            if (indeks != i) {
-                pomocniczy = lista[i];
-                lista[i] = lista[indeks];
-                lista[indeks] = pomocniczy;
+        }
+    }
+
+    private void liczbaPracownikowPowPensji() {
+        System.out.print("Podaj pensję progową:");
+        float prog = Float.parseFloat(sc.nextLine());
+        int licznik = 0;
+        for (int i = 0; i < liczbaPracownikow; i++) {
+            if (lista[i].getPlaca() >= prog) {
+                licznik++;
+            }
+        }
+        System.out.println("Liczba pracowników z płącą nie mniejszą niż " + prog + ": " + licznik);
+        nacisnijEnter();
+    }
+
+    private void sredniaPlacaWDziale() {
+        System.out.print("Podaj numer działu:");
+        int nrDzialu = Integer.parseInt(sc.nextLine());
+        int licznik = 0;
+        float suma = 0;
+        for (int i = 0; i < liczbaPracownikow; i++) {
+            if (lista[i].getNrDzialu() == nrDzialu) {
+                licznik++;
+                suma += lista[i].getPlaca();
+            }
+        }
+        if (licznik == 0) {
+            System.out.println("Nie ma nikogo w dziale nr " + nrDzialu);
+        } else {
+            System.out.println("Średnia płaca w dziale nr " + nrDzialu + " wynosi: " + suma / licznik);
+        }
+        nacisnijEnter();
+    }
+
+    private void najwiekszePlaceWgPlci() {
+        float maxKobiety = 0;
+        float maxMezczyzni = 0;
+        for (int i = 0; i < liczbaPracownikow; i++) {
+            if (lista[i].getPlec() == 'K') {
+                if (lista[i].getPlaca() > maxKobiety) {
+                    maxKobiety = lista[i].getPlaca();
+                }
+            }
+            if (lista[i].getPlec() == 'M') {
+                if (lista[i].getPlaca() > maxMezczyzni) {
+                    maxMezczyzni = lista[i].getPlaca();
+                }
+            }
+        }
+        System.out.println("Maksymalne płace: Mężczyźni: " + maxMezczyzni + "; Kobiety: " + maxKobiety + ";");
+        nacisnijEnter();
+    }
+
+    private void statystykaDzialow() {
+        int maxNrDzialu = 0;
+        for (int i = 0; i < liczbaPracownikow; i++) {
+            if (lista[i].getNrDzialu() > maxNrDzialu) {
+                maxNrDzialu = lista[i].getNrDzialu();
+            }
+        }
+
+        for (int nrDzialu = 0; nrDzialu <= maxNrDzialu; nrDzialu++) {
+            int licznikM = 0;
+            int licznikK = 0;
+            float suma = 0;
+            for (int j = 0; j < liczbaPracownikow; j++) {
+                if (lista[j].getNrDzialu() == nrDzialu) {
+                    if (lista[j].getPlec() == 'M') {
+                        licznikM++;
+                    }
+                    if (lista[j].getPlec() == 'K') {
+                        licznikK++;
+                    }
+                    suma += lista[j].getPlaca();
+                }
+            }
+            if (licznikK > 0 || licznikM > 0) {
+                if (licznikK > licznikM) {
+                    System.out.println("W dziale " + nrDzialu + " jest więcej kobiet.");
+                } else if (licznikM > licznikK) {
+                    System.out.println("W dziale " + nrDzialu + " jest więcej mężczyzn.");
+                } else {
+                    System.out.println("W dziale " + nrDzialu + " jest tyle samo mężczyzn co kobiet.");
+                }
+                System.out.println("Średnia pensja w dziale " + nrDzialu + " wynosi: " +
+                        (suma / (licznikM+licznikK)) );
+                nacisnijEnter();
+            }
+        }
+    }
+
+    private void stosunekSrednichPlacKobietMezczyzn() {
+        int licznikM = 0;
+        int licznikK = 0;
+        float sumaK = 0;
+        float sumaM = 0;
+        for (int i = 0; i < liczbaPracownikow; i++) {
+            if (lista[i].getPlec() == 'M') {
+                licznikM++;
+                sumaM += lista[i].getPlaca();
+            }
+            if (lista[i].getPlec() == 'K') {
+                licznikK++;
+                sumaK += lista[i].getPlaca();
+            }
+        }
+        if (licznikM > 0 && licznikK > 0) {
+            System.out.println("Stosunek średniej płacy kobiet do średniej płący mężczyzn wynosi: " +
+                    ((sumaK / licznikK) / (sumaM / licznikM)));
+        } else if (licznikM == 0 && licznikK == 0){
+            System.out.println("W bazie nie ma pracowników!");
+        } else if (licznikM == 0) {
+            System.out.println("W bazie nie ma mężczyzn!");
+        } else {
+            System.out.println("W bazie nie ma kobiet!");
+        }
+        nacisnijEnter();
+    }
+
+    private void zwiekszPensjeO_10prc() {
+        for (int i = 0; i < liczbaPracownikow; i++) {
+            lista[i].setPlaca( lista[i].getPlaca() + lista[i].obliczPodwyzke(10.0f) );
+        }
+        System.out.println("Pensje zwiększono.");
+        nacisnijEnter();
+    }
+
+    private void zwiekszPensjeOKwote() {
+        System.out.print("Zwiększanie pensji wszystkim. Podaj kwotę:");
+        float kwotaPodwyzki = Float.parseFloat(sc.nextLine());
+        float stosunekPodwyzekM = podwyzkaKwotowa(kwotaPodwyzki, 'M');
+        System.out.println("Stosunek podwyżek dla mężczyzn wyniósł: " + stosunekPodwyzekM);
+        float stosunekPodwyzekK = podwyzkaKwotowa(kwotaPodwyzki, 'K');
+        System.out.println("Stosunek podwyżek dla kobiet wyniósł: " + stosunekPodwyzekK);
+        nacisnijEnter();
+    }
+
+    private void sortujWgNazwiska() {
+        char kierunek;
+        do {
+            System.out.print("Sortowanie według nazwiska. Podaj kierunek - [r]osnąco / [m]alejąco:");
+            String s = sc.nextLine();
+            if (s.isEmpty()) {
+                kierunek = 'r';
+            } else {
+                kierunek = s.toLowerCase().charAt(0);
+            }
+        } while (kierunek != 'r' && kierunek != 'm');
+        sortujPoNazwisku(kierunek == 'r');
+        System.out.println(("Posortowano " + ((kierunek == 'r') ? "rosnąco" : "malejąco")));
+        nacisnijEnter();
+    }
+
+    private void sortujWgPensji() {
+        char kierunek;
+        do {
+            System.out.print("Sortowanie według pensji. Podaj kierunek - [r]osnąco / [m]alejąco:");
+            String s = sc.nextLine();
+            if (s.isEmpty()) {
+                kierunek = 'r';
+            } else {
+                kierunek = s.toLowerCase().charAt(0);
+            }
+        } while (kierunek != 'r' && kierunek != 'm');
+        sortujWgPensji(kierunek == 'r');
+        System.out.println(("Posortowano " + ((kierunek == 'r') ? "rosnąco" : "malejąco")));
+        nacisnijEnter();
+    }
+
+    private String kapitalka(String line){
+        if (line.length() > 0) {
+            line = line.toLowerCase();
+            String firstChar = line.substring(0, 1);
+            line = line.substring(1);
+            firstChar = firstChar.toUpperCase();
+            return firstChar + line;
+        } else {
+            return "";
+        }
+    }
+
+    private void sortujPoNazwisku(boolean rosnaco) {
+        Pracownik pomocniczy;
+        for (int i = 0; i < liczbaPracownikow - 1; i++) {
+            for (int j = i + 1; j < liczbaPracownikow; j++) {
+                if (rosnaco) {
+                    if (lista[i].getNazwisko().compareTo(lista[j].getNazwisko()) > 0) {
+                        pomocniczy = lista[i];
+                        lista[i] = lista[j];
+                        lista[j] = pomocniczy;
+                    }
+                } else {
+                    if (lista[i].getNazwisko().compareTo(lista[j].getNazwisko()) < 0) {
+                        pomocniczy = lista[i];
+                        lista[i] = lista[j];
+                        lista[j] = pomocniczy;
+                    }
+                }
             }
         }
     }
@@ -509,11 +525,6 @@ public class ListaPracownikow {
         return ( (sumaPlacBazowych == 0) ? 0.0f : (sumaPlacPoPodwyzce / sumaPlacBazowych) );
     }
 
-    private void nacisnijEnter() {
-        System.out.println("Naciśnij Enter...");
-        sc.nextLine();
-    }
-
     private void exportAllToFile(String fileName) throws Exception {
         BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(BASE_PATH + fileName));
         for (int i = 0; i < liczbaPracownikow; i++) {
@@ -528,5 +539,10 @@ public class ListaPracownikow {
             );
         }
         bufferedWriter.close();
+    }
+
+    private void nacisnijEnter() {
+        System.out.println("Naciśnij Enter...");
+        sc.nextLine();
     }
 }

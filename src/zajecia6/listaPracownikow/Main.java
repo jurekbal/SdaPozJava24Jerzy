@@ -2,8 +2,6 @@ package zajecia6.listaPracownikow;
 
 // program2012.pdf
 
-import java.util.Scanner;
-
 public class Main {
 
     public static void main(String[] args) {
@@ -44,7 +42,7 @@ public class Main {
                     break;
                 }
                 case "99" : {
-                    lista.generuj();
+                    lista.generujPracownikow();
                     break;
                 }
                 case "q": case "e": {
