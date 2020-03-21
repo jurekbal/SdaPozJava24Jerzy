@@ -35,6 +35,5 @@ public class Navigator {
                 inputStream.close();
             }
         }
-
     }
 }

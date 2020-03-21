@@ -5,7 +5,7 @@ EAST
 SOUTH
 EAST
 WEST
-gówniany argument
+wadliwy argument
 WEST
 WEST
 SOUTH
