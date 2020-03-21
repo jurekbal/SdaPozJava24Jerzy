@@ -1,13 +1,14 @@
 NORTH
 NORTH
-EAST
-EAST
+eAST
+east
 SOUTH
-EAST
+east
 WEST
 wadliwy argument
 WEST
 WEST
+
 SOUTH
 SOUTH
 WEST

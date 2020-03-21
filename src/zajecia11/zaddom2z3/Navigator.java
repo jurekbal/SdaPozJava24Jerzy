@@ -18,7 +18,7 @@ public class Navigator {
             int x;
             int y;
             while (scanner.hasNext()) {
-                line = scanner.nextLine();
+                line = scanner.nextLine().toUpperCase();
                 try {
                     x = Direction.valueOf(line).x;
                     y = Direction.valueOf(line).y;
