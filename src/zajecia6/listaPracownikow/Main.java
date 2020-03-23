@@ -38,7 +38,13 @@ public class Main {
                     break;
                 }
                 case "7":{
-                    System.out.println("Przepraszamy. Funkcja nie jest dostępna w tej wersji programu.");
+                    lista.funkcjePlikowTekstowych(menu);
+                    break;
+                }
+
+                case "8":{
+                    menu.wyswietlInformacjeOProgramie();
+                    lista.nacisnijEnter();
                     break;
                 }
                 case "99" : {

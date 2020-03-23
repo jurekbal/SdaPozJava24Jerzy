@@ -1,18 +1,20 @@
 package zajecia6.listaPracownikow;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
+import java.io.*;
+import java.nio.channels.FileLock;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class ListaPracownikow {
     private Pracownik[] lista = new Pracownik[100];
     private int liczbaPracownikow = 0;
     Scanner sc = new Scanner(System.in);
-    private final String BASE_PATH = System.getProperty("user.home") + "\\Dysk Google\\Kurs Java\\files\\";
+    private final String BASE_PATH = System.getProperty("user.home") + "/Dysk Google/Kurs Java/files/";
 
-    // konstruktor uruchamia generator do celów testowych
+    // konstruktor uruchamia funkcje do celow testowych
     public ListaPracownikow() {
         generujPracownikow();
+        //dodajPracownika();
     }
 
     // funkcja 1
@@ -44,9 +46,7 @@ public class ListaPracownikow {
             String imie = kapitalka(sc.nextLine());
             System.out.print("Podaj Nazwisko:");
             String nazwisko = kapitalka(sc.nextLine());
-            System.out.print("Podaj płeć (M/K):");
-            char plec = (sc.nextLine().toUpperCase().charAt(0));
-            //TODO kontrola wprowadzania: płeć
+            char plec = pobierzPlec();
             System.out.print("Podaj nr działu:");
             int nrDzialu = Integer.parseInt(sc.nextLine());
             System.out.print("Podaj płacę:");
@@ -55,30 +55,33 @@ public class ListaPracownikow {
             int wiek = Integer.parseInt(sc.nextLine());
             System.out.print("Podaj liczbę dzieci:");
             int liczbaDzieci = Integer.parseInt(sc.nextLine());
-            System.out.print("Podaj stan cywilny (W - wolny, Z - zajęty:");
-            char stanCywilnyChar = (sc.nextLine().toUpperCase().charAt(0));
-            boolean stanCywilny;
-            stanCywilny = stanCywilnyChar == 'Z'; //true / false
-            //TODO kontrola wprowadzania: stan cywilny
+            boolean stanCywilny = pobierzStanCywilny();
 
             Pracownik pracownik = new Pracownik(imie, nazwisko, plec, nrDzialu, placa, wiek, liczbaDzieci, stanCywilny);
             lista[liczbaPracownikow++] = pracownik;
 
         } else {
-            System.out.println("Błąd. Lista jest pełna. ");
+            System.out.println("Błąd. Lista jest pełna.");
             nacisnijEnter();
         }
 
     }
 
     // funckja 3
-    public void eksport() {
+    public String eksport() {
         System.out.println("Eksport do pliku tekstowego. Podaj nazwę pliku:");
         String fileName = sc.nextLine();
+        if ((fileName == null || fileName.isBlank()) ) {
+            System.out.println("Nieprawidłowa nazwa pliku.");
+            nacisnijEnter();
+            return null;
+        }
         try {
             exportAllToFile(fileName);
+            return fileName;
         } catch (Exception e) {
-            System.err.println(e);
+            System.err.println(e.getLocalizedMessage());
+            return null;
         }
     }
 
@@ -97,7 +100,7 @@ public class ListaPracownikow {
             System.out.println("Lista jest pusta.");
         }
 
-        System.out.println("Podaj numer pracownika do usunięcia lub 'q' aby anulować:");
+        System.out.print("Podaj numer pracownika do usunięcia lub 'q' aby anulować:");
         String akcja = sc.nextLine();
         if (akcja.equals("q")) {
             return;
@@ -226,6 +229,48 @@ public class ListaPracownikow {
         sc.nextLine();
     }
 
+    private char pobierzPlec() {
+        char inputChar = '?';
+        boolean nieprawidloweDane;
+
+        do {
+            System.out.print("Podaj płeć (M/K):");
+            try {
+                inputChar = sc.nextLine().toUpperCase().charAt(0);
+                nieprawidloweDane = (inputChar != 'M' && inputChar != 'K');
+            } catch (Exception e) {
+                nieprawidloweDane = true;
+            }
+
+            if (nieprawidloweDane) {
+                System.out.println("Podano nieprawidłowe dane!");
+            }
+        } while (nieprawidloweDane);
+
+        return inputChar;
+    }
+
+    private boolean pobierzStanCywilny() {
+        char inputChar = '?';
+        boolean nieprawidloweDane;
+
+        do {
+            System.out.print("Podaj stan cywilny (W - wolny, Z - zajęty:");
+            try {
+                inputChar = sc.nextLine().toUpperCase().charAt(0);
+                nieprawidloweDane = (inputChar != 'W' && inputChar != 'Z');
+            } catch (Exception e) {
+                nieprawidloweDane = true;
+            }
+
+            if (nieprawidloweDane) {
+                System.out.println("Podano nieprawidłowe dane!");
+            }
+        } while (nieprawidloweDane);
+
+        return inputChar == 'Z';
+    }
+
     public void dodatkoweFunkcje(Menu menu){
         String wybor = "";
 
@@ -274,7 +319,7 @@ public class ListaPracownikow {
                     break;
                 }
                 default: {
-                    System.out.print("Nieprawidłowa opcja. ");
+                    System.out.print("Nieprawidłowa opcja.");
                     nacisnijEnter();
                 }
             }
@@ -448,6 +493,66 @@ public class ListaPracownikow {
         nacisnijEnter();
     }
 
+    public void funkcjePlikowTekstowych(Menu menu) {
+        String nazwaPliku = eksport();
+        if (nazwaPliku == null) {
+            return;
+        }
+        String wybor = "";
+
+        while (!wybor.equals("q") && !wybor.equals("e")) {
+            menu.wyswietlPodmenu7();
+            wybor = menu.pobierzAkcjeOdUzytkownika();
+            switch (wybor) {
+                case "1": {
+                    try {
+                        wyswietlDaneNajdluzszeNazwisko(nazwaPliku);
+                    } catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    break;
+                }
+                //TODO Implementować kolejne funkcje
+                case "q":
+                case "e": {
+                    break;
+                }
+                default: {
+                    System.out.print("Nieprawidłowa opcja.");
+                    nacisnijEnter();
+                }
+            }
+        }
+    }
+
+    private void wyswietlDaneNajdluzszeNazwisko(String nazwaPliku) throws IOException {
+        if (!(nazwaPliku == null || nazwaPliku.isBlank()) ) {
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(BASE_PATH + nazwaPliku));
+            int dlugoscNajdluzszegoNazwiska = 0;
+            String danePracownikaONajdluzszymNazwisku = "";
+            String liniaDanych;
+            String nazwisko;
+
+            while ((liniaDanych = bufferedReader.readLine()) != null) {
+                nazwisko = liniaDanych.split(" ")[0];
+                if (nazwisko.length() > dlugoscNajdluzszegoNazwiska) {
+                    danePracownikaONajdluzszymNazwisku = liniaDanych;
+                    dlugoscNajdluzszegoNazwiska = nazwisko.length();
+                }
+            }
+
+            if (dlugoscNajdluzszegoNazwiska > 0) {
+                System.out.println(("Dane pracownika o najdłuższymm nazwisku:"));
+                System.out.println(danePracownikaONajdluzszymNazwisku);
+            } else {
+                System.out.println("Brak danych w pliku");
+            }
+            nacisnijEnter();
+        } else {
+            return;
+        }
+    }
+
     private String kapitalka(String line){
         if (line.length() > 0) {
             line = line.toLowerCase();
@@ -541,8 +646,9 @@ public class ListaPracownikow {
         bufferedWriter.close();
     }
 
-    private void nacisnijEnter() {
+    public void nacisnijEnter() {
         System.out.println("Naciśnij Enter...");
         sc.nextLine();
     }
+
 }
