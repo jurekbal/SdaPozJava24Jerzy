@@ -3,6 +3,7 @@ package zajecia6.listaPracownikow;
 import java.io.*;
 import java.nio.channels.FileLock;
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class ListaPracownikow {
@@ -512,6 +513,22 @@ public class ListaPracownikow {
                     }
                     break;
                 }
+                case "2" : {
+                    try {
+                        obliczSredniaWiekuOsobZDziecmi(nazwaPliku);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                }
+                case "3" : {
+                    try {
+                        zakodujPlik(nazwaPliku);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                }
                 //TODO Implementować kolejne funkcje
                 case "q":
                 case "e": {
@@ -522,6 +539,102 @@ public class ListaPracownikow {
                     nacisnijEnter();
                 }
             }
+        }
+    }
+
+    private void zakodujPlik(String nazwaPliku) throws IOException {
+        if (!(nazwaPliku == null || nazwaPliku.isBlank()) ) {
+            float sredniaPlaca = obliczSredniaPlaceZPliku(nazwaPliku);
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(BASE_PATH + nazwaPliku));
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(BASE_PATH + "zakodowane.txt"));
+            String liniaDanych;
+            String[] rekord;
+            float placa;
+
+            while ((liniaDanych = bufferedReader.readLine()) != null) {
+                rekord = liniaDanych.split(" ");
+                placa = Float.parseFloat(rekord[4]);
+                if (placa < sredniaPlaca) {
+                    rekord[0] = kodujNazwisko(rekord[0]);
+                }
+                liniaDanych = rekombinuj(rekord);
+                bufferedWriter.write(liniaDanych);
+            }
+            bufferedWriter.close();
+            System.out.println("Zakodowano.");
+            System.out.println("Średnia płaca: " + sredniaPlaca);
+            nacisnijEnter();
+
+        } else {
+            return;
+        }
+    }
+
+    private String rekombinuj(String[] rekord) {
+        StringBuffer rekombinowany = new StringBuffer();
+        for (int i = 0; i < rekord.length; i++) {
+            rekombinowany.append(rekord[i]);
+            if (i< rekord.length-1) {
+                rekombinowany.append(" ");
+            }
+        }
+        rekombinowany.append("\n");
+        return rekombinowany.toString();
+    }
+
+    private String kodujNazwisko(String nazwisko) {
+        return (nazwisko.charAt(0) + "*".repeat(nazwisko.length()-2) + nazwisko.charAt(nazwisko.length()-1));
+    }
+
+    private float obliczSredniaPlaceZPliku(String nazwaPliku) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(BASE_PATH + nazwaPliku));
+        int liczbaPracownikow = 0;
+        float sumaPlac = 0.0f;
+        String liniaDanych;
+        String[] rekord;
+
+        while ((liniaDanych = bufferedReader.readLine()) != null) {
+            rekord = liniaDanych.split(" ");
+            sumaPlac += Float.parseFloat(rekord[4]);
+            liczbaPracownikow++;
+        }
+        bufferedReader.close();
+
+        if (liczbaPracownikow > 0) {
+            return sumaPlac / (float) liczbaPracownikow;
+        } else {
+            return 0;
+        }
+    }
+
+    private void obliczSredniaWiekuOsobZDziecmi(String nazwaPliku) throws IOException {
+        if (!(nazwaPliku == null || nazwaPliku.isBlank()) ) {
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(BASE_PATH + nazwaPliku));
+            int sumaLat = 0;
+            int liczbaPracownikowZDziecmi = 0;
+            int liczbaDzieci;
+            String liniaDanych;
+            String[] rekord;
+
+            while ((liniaDanych = bufferedReader.readLine()) != null) {
+                rekord = liniaDanych.split(" ");
+                liczbaDzieci = Integer.parseInt(rekord[6]);
+                if (liczbaDzieci > 0) {
+                    sumaLat += Integer.parseInt(rekord[5]);
+                    liczbaPracownikowZDziecmi++;
+                }
+            }
+
+            if (liczbaPracownikowZDziecmi > 0 ) {
+                System.out.println("Średni wiek pracowników z dziećmi wynosi: " +
+                        (double) sumaLat / (double) liczbaPracownikowZDziecmi);
+            } else {
+                System.out.println("W pliku nie ma pracowników z dziećmi.");
+            }
+            nacisnijEnter();
+
+        } else {
+            return;
         }
     }
 
@@ -637,7 +750,7 @@ public class ListaPracownikow {
                     " " + lista[i].getImie() +
                     " " + lista[i].getPlec() +
                     " " + lista[i].getNrDzialu() +
-                    " " + lista[i].getPlaca() +
+                    " " + String.format( Locale.US,"%.2f", lista[i].getPlaca()) +
                     " " + lista[i].getWiek() +
                     " " + lista[i].getLiczbaDzieci() +
                     System.lineSeparator()
