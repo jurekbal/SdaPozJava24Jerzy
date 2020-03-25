@@ -4,6 +4,12 @@ import java.util.Scanner;
 
 public class Menu {
 
+    public static void nacisnijEnter() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Naciśnij Enter...");
+        scanner.nextLine();
+    }
+
     public void wyswietlMenuGlowne(){
         System.out.println("### MENU GŁÓWNE ###");
         System.out.println("Wybierz opcję:");
@@ -60,4 +66,5 @@ public class Menu {
         String line = sc.nextLine();
         return line.toLowerCase();
     }
+
 }

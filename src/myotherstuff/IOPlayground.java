@@ -1,4 +1,4 @@
-package zajecia6.listaPracownikow;
+package myotherstuff;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

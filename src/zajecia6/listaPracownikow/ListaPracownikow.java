@@ -10,7 +10,7 @@ public class ListaPracownikow {
     private Pracownik[] lista = new Pracownik[100];
     private int liczbaPracownikow = 0;
     Scanner sc = new Scanner(System.in);
-    private final String BASE_PATH = System.getProperty("user.home") + "/Dysk Google/Kurs Java/files/";
+    public static final String BASE_PATH = System.getProperty("user.home") + "/Dysk Google/Kurs Java/files/";
 
     // konstruktor uruchamia funkcje do celow testowych
     public ListaPracownikow() {
@@ -494,20 +494,22 @@ public class ListaPracownikow {
         nacisnijEnter();
     }
 
+    //TODO Wydzielić operacje na plikach do osobnej klasy
     public void funkcjePlikowTekstowych(Menu menu) {
         String nazwaPliku = eksport();
         if (nazwaPliku == null) {
             return;
         }
+        Pliki pliki = new Pliki(BASE_PATH + nazwaPliku);
         String wybor = "";
 
-        while (!wybor.equals("q") && !wybor.equals("e")) {
+        while (!(wybor.equals("q") || wybor.equals("e"))) {
             menu.wyswietlPodmenu7();
             wybor = menu.pobierzAkcjeOdUzytkownika();
             switch (wybor) {
                 case "1": {
                     try {
-                        wyswietlDaneNajdluzszeNazwisko(nazwaPliku);
+                        pliki.wyswietlDaneNajdluzszeNazwisko();
                     } catch (Exception e){
                         e.printStackTrace();
                     }
@@ -515,7 +517,7 @@ public class ListaPracownikow {
                 }
                 case "2" : {
                     try {
-                        obliczSredniaWiekuOsobZDziecmi(nazwaPliku);
+                        pliki.obliczSredniaWiekuOsobZDziecmi();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -523,13 +525,20 @@ public class ListaPracownikow {
                 }
                 case "3" : {
                     try {
-                        zakodujPlik(nazwaPliku);
+                        pliki.zakodujPlik();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                     break;
                 }
-                //TODO Implementować kolejne funkcje
+                case "4" : {
+                    try {
+                        pliki.utworzHTML();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                }
                 case "q":
                 case "e": {
                     break;
@@ -542,129 +551,7 @@ public class ListaPracownikow {
         }
     }
 
-    private void zakodujPlik(String nazwaPliku) throws IOException {
-        if (!(nazwaPliku == null || nazwaPliku.isBlank()) ) {
-            float sredniaPlaca = obliczSredniaPlaceZPliku(nazwaPliku);
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(BASE_PATH + nazwaPliku));
-            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(BASE_PATH + "zakodowane.txt"));
-            String liniaDanych;
-            String[] rekord;
-            float placa;
 
-            while ((liniaDanych = bufferedReader.readLine()) != null) {
-                rekord = liniaDanych.split(" ");
-                placa = Float.parseFloat(rekord[4]);
-                if (placa < sredniaPlaca) {
-                    rekord[0] = kodujNazwisko(rekord[0]);
-                }
-                liniaDanych = rekombinuj(rekord);
-                bufferedWriter.write(liniaDanych);
-            }
-            bufferedWriter.close();
-            System.out.println("Zakodowano.");
-            System.out.println("Średnia płaca: " + sredniaPlaca);
-            nacisnijEnter();
-
-        } else {
-            return;
-        }
-    }
-
-    private String rekombinuj(String[] rekord) {
-        StringBuffer rekombinowany = new StringBuffer();
-        for (int i = 0; i < rekord.length; i++) {
-            rekombinowany.append(rekord[i]);
-            if (i< rekord.length-1) {
-                rekombinowany.append(" ");
-            }
-        }
-        rekombinowany.append("\n");
-        return rekombinowany.toString();
-    }
-
-    private String kodujNazwisko(String nazwisko) {
-        return (nazwisko.charAt(0) + "*".repeat(nazwisko.length()-2) + nazwisko.charAt(nazwisko.length()-1));
-    }
-
-    private float obliczSredniaPlaceZPliku(String nazwaPliku) throws IOException {
-        BufferedReader bufferedReader = new BufferedReader(new FileReader(BASE_PATH + nazwaPliku));
-        int liczbaPracownikow = 0;
-        float sumaPlac = 0.0f;
-        String liniaDanych;
-        String[] rekord;
-
-        while ((liniaDanych = bufferedReader.readLine()) != null) {
-            rekord = liniaDanych.split(" ");
-            sumaPlac += Float.parseFloat(rekord[4]);
-            liczbaPracownikow++;
-        }
-        bufferedReader.close();
-
-        if (liczbaPracownikow > 0) {
-            return sumaPlac / (float) liczbaPracownikow;
-        } else {
-            return 0;
-        }
-    }
-
-    private void obliczSredniaWiekuOsobZDziecmi(String nazwaPliku) throws IOException {
-        if (!(nazwaPliku == null || nazwaPliku.isBlank()) ) {
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(BASE_PATH + nazwaPliku));
-            int sumaLat = 0;
-            int liczbaPracownikowZDziecmi = 0;
-            int liczbaDzieci;
-            String liniaDanych;
-            String[] rekord;
-
-            while ((liniaDanych = bufferedReader.readLine()) != null) {
-                rekord = liniaDanych.split(" ");
-                liczbaDzieci = Integer.parseInt(rekord[6]);
-                if (liczbaDzieci > 0) {
-                    sumaLat += Integer.parseInt(rekord[5]);
-                    liczbaPracownikowZDziecmi++;
-                }
-            }
-
-            if (liczbaPracownikowZDziecmi > 0 ) {
-                System.out.println("Średni wiek pracowników z dziećmi wynosi: " +
-                        (double) sumaLat / (double) liczbaPracownikowZDziecmi);
-            } else {
-                System.out.println("W pliku nie ma pracowników z dziećmi.");
-            }
-            nacisnijEnter();
-
-        } else {
-            return;
-        }
-    }
-
-    private void wyswietlDaneNajdluzszeNazwisko(String nazwaPliku) throws IOException {
-        if (!(nazwaPliku == null || nazwaPliku.isBlank()) ) {
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(BASE_PATH + nazwaPliku));
-            int dlugoscNajdluzszegoNazwiska = 0;
-            String danePracownikaONajdluzszymNazwisku = "";
-            String liniaDanych;
-            String nazwisko;
-
-            while ((liniaDanych = bufferedReader.readLine()) != null) {
-                nazwisko = liniaDanych.split(" ")[0];
-                if (nazwisko.length() > dlugoscNajdluzszegoNazwiska) {
-                    danePracownikaONajdluzszymNazwisku = liniaDanych;
-                    dlugoscNajdluzszegoNazwiska = nazwisko.length();
-                }
-            }
-
-            if (dlugoscNajdluzszegoNazwiska > 0) {
-                System.out.println(("Dane pracownika o najdłuższymm nazwisku:"));
-                System.out.println(danePracownikaONajdluzszymNazwisku);
-            } else {
-                System.out.println("Brak danych w pliku");
-            }
-            nacisnijEnter();
-        } else {
-            return;
-        }
-    }
 
     private String kapitalka(String line){
         if (line.length() > 0) {
@@ -759,6 +646,7 @@ public class ListaPracownikow {
         bufferedWriter.close();
     }
 
+    //TODO usunąć i przepisać wywołania na Menu.nacisnijEnter()
     public void nacisnijEnter() {
         System.out.println("Naciśnij Enter...");
         sc.nextLine();
