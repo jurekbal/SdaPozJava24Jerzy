@@ -1,8 +1,6 @@
 package zajecia6.listaPracownikow;
 
 import java.io.*;
-import java.nio.channels.FileLock;
-import java.util.Arrays;
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -63,18 +61,19 @@ public class ListaPracownikow {
 
         } else {
             System.out.println("Błąd. Lista jest pełna.");
-            nacisnijEnter();
+            Menu.nacisnijEnter();
         }
 
     }
 
     // funckja 3
-    public String eksport() {
+    String eksport() {
+        Scanner sc = new Scanner(System.in);
         System.out.println("Eksport do pliku tekstowego. Podaj nazwę pliku:");
         String fileName = sc.nextLine();
         if ((fileName == null || fileName.isBlank()) ) {
             System.out.println("Nieprawidłowa nazwa pliku.");
-            nacisnijEnter();
+            Menu.nacisnijEnter();
             return null;
         }
         try {
@@ -84,6 +83,22 @@ public class ListaPracownikow {
             System.err.println(e.getLocalizedMessage());
             return null;
         }
+    }
+
+    private void exportAllToFile(String fileName) throws Exception {
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(BASE_PATH + fileName));
+        for (int i = 0; i < liczbaPracownikow; i++) {
+            bufferedWriter.write(lista[i].getNazwisko() +
+                    " " + lista[i].getImie() +
+                    " " + lista[i].getPlec() +
+                    " " + lista[i].getNrDzialu() +
+                    " " + String.format( Locale.US,"%.2f", lista[i].getPlaca()) +
+                    " " + lista[i].getWiek() +
+                    " " + lista[i].getLiczbaDzieci() +
+                    System.lineSeparator()
+            );
+        }
+        bufferedWriter.close();
     }
 
     // funkcja 4
@@ -133,7 +148,7 @@ public class ListaPracownikow {
 
         if (liczbaPracownikow == 0) {
             System.out.print("Lista jest pusta. ");
-            nacisnijEnter();
+            Menu.nacisnijEnter();
             return;
         }
 
@@ -161,7 +176,7 @@ public class ListaPracownikow {
         }
         if (nrOpcji == 2 && lista[nrPracDoEdycji].getPlec() != 'K'){
             System.out.println("BŁĄD! Nazwisko można edytować tylko kobietom. ");
-            nacisnijEnter();
+            Menu.nacisnijEnter();
             return;
         }
 
@@ -321,7 +336,7 @@ public class ListaPracownikow {
                 }
                 default: {
                     System.out.print("Nieprawidłowa opcja.");
-                    nacisnijEnter();
+                    Menu.nacisnijEnter();
                 }
             }
         }
@@ -337,7 +352,7 @@ public class ListaPracownikow {
             }
         }
         System.out.println("Liczba pracowników z płącą nie mniejszą niż " + prog + ": " + licznik);
-        nacisnijEnter();
+        Menu.nacisnijEnter();
     }
 
     private void sredniaPlacaWDziale() {
@@ -356,7 +371,7 @@ public class ListaPracownikow {
         } else {
             System.out.println("Średnia płaca w dziale nr " + nrDzialu + " wynosi: " + suma / licznik);
         }
-        nacisnijEnter();
+        Menu.nacisnijEnter();
     }
 
     private void najwiekszePlaceWgPlci() {
@@ -375,7 +390,7 @@ public class ListaPracownikow {
             }
         }
         System.out.println("Maksymalne płace: Mężczyźni: " + maxMezczyzni + "; Kobiety: " + maxKobiety + ";");
-        nacisnijEnter();
+        Menu.nacisnijEnter();
     }
 
     private void statystykaDzialow() {
@@ -411,7 +426,7 @@ public class ListaPracownikow {
                 }
                 System.out.println("Średnia pensja w dziale " + nrDzialu + " wynosi: " +
                         (suma / (licznikM+licznikK)) );
-                nacisnijEnter();
+                Menu.nacisnijEnter();
             }
         }
     }
@@ -441,7 +456,7 @@ public class ListaPracownikow {
         } else {
             System.out.println("W bazie nie ma kobiet!");
         }
-        nacisnijEnter();
+        Menu.nacisnijEnter();
     }
 
     private void zwiekszPensjeO_10prc() {
@@ -449,7 +464,7 @@ public class ListaPracownikow {
             lista[i].setPlaca( lista[i].getPlaca() + lista[i].obliczPodwyzke(10.0f) );
         }
         System.out.println("Pensje zwiększono.");
-        nacisnijEnter();
+        Menu.nacisnijEnter();
     }
 
     private void zwiekszPensjeOKwote() {
@@ -459,7 +474,7 @@ public class ListaPracownikow {
         System.out.println("Stosunek podwyżek dla mężczyzn wyniósł: " + stosunekPodwyzekM);
         float stosunekPodwyzekK = podwyzkaKwotowa(kwotaPodwyzki, 'K');
         System.out.println("Stosunek podwyżek dla kobiet wyniósł: " + stosunekPodwyzekK);
-        nacisnijEnter();
+        Menu.nacisnijEnter();
     }
 
     private void sortujWgNazwiska() {
@@ -475,7 +490,7 @@ public class ListaPracownikow {
         } while (kierunek != 'r' && kierunek != 'm');
         sortujPoNazwisku(kierunek == 'r');
         System.out.println(("Posortowano " + ((kierunek == 'r') ? "rosnąco" : "malejąco")));
-        nacisnijEnter();
+        Menu.nacisnijEnter();
     }
 
     private void sortujWgPensji() {
@@ -491,7 +506,7 @@ public class ListaPracownikow {
         } while (kierunek != 'r' && kierunek != 'm');
         sortujWgPensji(kierunek == 'r');
         System.out.println(("Posortowano " + ((kierunek == 'r') ? "rosnąco" : "malejąco")));
-        nacisnijEnter();
+        Menu.nacisnijEnter();
     }
 
     //TODO Wydzielić operacje na plikach do osobnej klasy
@@ -545,13 +560,11 @@ public class ListaPracownikow {
                 }
                 default: {
                     System.out.print("Nieprawidłowa opcja.");
-                    nacisnijEnter();
+                    Menu.nacisnijEnter();
                 }
             }
         }
     }
-
-
 
     private String kapitalka(String line){
         if (line.length() > 0) {
@@ -628,28 +641,6 @@ public class ListaPracownikow {
         }
         System.out.println("Suma podwyżek dla " + (plec == 'M' ? "mężczyzn " : "kobiet ") + "wyniosła: " + sumaPodwyzek);
         return ( (sumaPlacBazowych == 0) ? 0.0f : (sumaPlacPoPodwyzce / sumaPlacBazowych) );
-    }
-
-    private void exportAllToFile(String fileName) throws Exception {
-        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(BASE_PATH + fileName));
-        for (int i = 0; i < liczbaPracownikow; i++) {
-            bufferedWriter.write(lista[i].getNazwisko() +
-                    " " + lista[i].getImie() +
-                    " " + lista[i].getPlec() +
-                    " " + lista[i].getNrDzialu() +
-                    " " + String.format( Locale.US,"%.2f", lista[i].getPlaca()) +
-                    " " + lista[i].getWiek() +
-                    " " + lista[i].getLiczbaDzieci() +
-                    System.lineSeparator()
-            );
-        }
-        bufferedWriter.close();
-    }
-
-    //TODO usunąć i przepisać wywołania na Menu.nacisnijEnter()
-    public void nacisnijEnter() {
-        System.out.println("Naciśnij Enter...");
-        sc.nextLine();
     }
 
 }

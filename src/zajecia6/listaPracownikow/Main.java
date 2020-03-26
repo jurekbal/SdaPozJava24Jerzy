@@ -44,7 +44,7 @@ public class Main {
 
                 case "8":{
                     menu.wyswietlInformacjeOProgramie();
-                    lista.nacisnijEnter();
+                    Menu.nacisnijEnter();
                     break;
                 }
                 case "99" : {

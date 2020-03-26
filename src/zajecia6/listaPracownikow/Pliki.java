@@ -1,15 +1,26 @@
 package zajecia6.listaPracownikow;
 
+import javax.swing.text.html.HTML;
 import java.io.*;
+import java.util.Locale;
+import java.util.Scanner;
 
 class Pliki {
 
     private String plik;
+    private final int POLE_W_PLIKU_NAZWISKO = 0;
+    private final int POLE_W_PLIKU_IMIE = 1;
+    private final int POLE_W_PLIKU_PLEC = 2;
+    private final int POLE_W_PLIKU_NR_DZIALU = 3;
+    private final int POLE_W_PLIKU_PLACA = 4;
+    private final int POLE_W_PLIKU_WIEK = 5;
+    private final int POLE_W_PLIKU_LICZBA_DZIECI = 6;
 
     public Pliki(String plik) {
-//        TODO Kontrola nazwy pliku
         this.plik = plik;
     }
+
+
 
     void wyswietlDaneNajdluzszeNazwisko() throws IOException {
         BufferedReader bufferedReader = new BufferedReader(new FileReader(plik));
@@ -44,9 +55,9 @@ class Pliki {
             float placa;
             while ((liniaDanych = bufferedReader.readLine()) != null) {
                 rekord = liniaDanych.split(" ");
-                placa = Float.parseFloat(rekord[4]);
+                placa = Float.parseFloat(rekord[POLE_W_PLIKU_PLACA]);
                 if (placa < sredniaPlaca) {
-                    rekord[0] = kodujNazwisko(rekord[0]);
+                    rekord[POLE_W_PLIKU_NAZWISKO] = kodujNazwisko(rekord[POLE_W_PLIKU_NAZWISKO]);
                 }
                 liniaDanych = rekombinuj(rekord);
                 stringBuilder.append(liniaDanych);
@@ -88,7 +99,7 @@ class Pliki {
 
         while ((liniaDanych = bufferedReader.readLine()) != null) {
             rekord = liniaDanych.split(" ");
-            sumaPlac += Float.parseFloat(rekord[4]);
+            sumaPlac += Float.parseFloat(rekord[POLE_W_PLIKU_PLACA]);
             liczbaPracownikow++;
         }
         bufferedReader.close();
@@ -110,9 +121,9 @@ class Pliki {
 
         while ((liniaDanych = bufferedReader.readLine()) != null) {
             rekord = liniaDanych.split(" ");
-            liczbaDzieci = Integer.parseInt(rekord[6]);
+            liczbaDzieci = Integer.parseInt(rekord[POLE_W_PLIKU_LICZBA_DZIECI]);
             if (liczbaDzieci > 0) {
-                sumaLat += Integer.parseInt(rekord[5]);
+                sumaLat += Integer.parseInt(rekord[POLE_W_PLIKU_WIEK]);
                 liczbaPracownikowZDziecmi++;
             }
         }
@@ -130,13 +141,22 @@ class Pliki {
         BufferedReader bufferedReader = new BufferedReader(new FileReader(plik));
         StringBuilder html = new StringBuilder();
         String liniaDanych;
+        String[] rekord;
 
         html.append(preHTML());
         html.append(naglowkiTabeli());
         while ((liniaDanych = bufferedReader.readLine()) != null) {
-            //TODO Bez liczby dzieci - jak w treści zadania
+            rekord = liniaDanych.split(" ");
             html.append("<tr>\n\t<td>");
-            html.append(liniaDanych.replace(" ", "</td>\n\t<td>"));
+            //html.append(liniaDanych.replace(" ", "</td>\n\t<td>"));
+            html.append(
+                    rekord[POLE_W_PLIKU_NAZWISKO]).append("</td>\n\t<td>")
+                    .append(rekord[POLE_W_PLIKU_IMIE]).append("</td>\n\t<td>")
+                    .append(rekord[POLE_W_PLIKU_PLEC]).append("</td>\n\t<td>")
+                    .append(rekord[POLE_W_PLIKU_NR_DZIALU]).append("</td>\n\t<td>")
+                    .append(rekord[POLE_W_PLIKU_PLACA]).append("</td>\n\t<td>")
+                    .append(rekord[POLE_W_PLIKU_WIEK]).append("</td>\n\t<td>");
+                    // bez liczby dzieci zgdodnie z założeniami zadania
             html.append("</td>\n</tr>\n");
         }
         bufferedReader.close();
@@ -157,6 +177,7 @@ class Pliki {
     }
 
     private String naglowkiTabeli() {
+        // nie robimy kolumny dla liczby dzieci zgodnie z warunkami zadania
         return "<tr>\n\t" +
                 "<th>Nazwisko</th>\n\t" +
                 "<th>Imię</th>\n\t" +
@@ -164,7 +185,6 @@ class Pliki {
                 "<th>Nr działu</th>\n\t" +
                 "<th>Płaca</th>\n\t" +
                 "<th>Wiek</th>\n\t" +
-                "<th>Liczba dzieci</th>\n" +
                 "</tr>\n";
     }
 
