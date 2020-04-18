@@ -1,0 +1,6 @@
+18-04-2020 sobota
+e-learning przez ClickMeeting
+powtórka: Klasy, modyfikatory dostępu
+
+nowe zagadnienia:
+Interfejsy, Kolekcje (listy, kolejki, ,stosy, mapy)
