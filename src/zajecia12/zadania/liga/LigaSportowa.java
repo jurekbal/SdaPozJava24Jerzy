@@ -1,5 +1,13 @@
 package zajecia12.zadania.liga;
 
+import zajecia11.zaddom3z3.Liczebniki;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -7,25 +15,38 @@ public class LigaSportowa {
     private static Map<String, Wyniki> tabela = new HashMap<>();
 
     public static void main(String[] args) {
-        //TODO read data from files
-        String testLine = "LPO - LWA 3:1";
-        String[] line = parseLine(testLine);
 
-        addTeamIfNotExists(line);
-        aktualizujWyniki(line);
+        //TODO read data from folder
+        //String testLine = "LPO - LWA 3:1";
+        //String[] line = parseLine(testLine);
+
+        Path path = Paths.get("iofiles/liga/kolejka1.txt");
+
+        try (BufferedReader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+
+                String[] lineArr = parseLine(line);
+                addTeamIfNotExists(lineArr);
+                aktualizujWyniki(lineArr);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         printTable();
-
     }
 
     private static void printTable() {
         for (Map.Entry<String, Wyniki> linia : tabela.entrySet()) {
             System.out.println(linia.getKey() +
-                    " pkt:" + linia.getValue().getPunkty() +
-                    " W:" + linia.getValue().getWygrane() +
-                    " R:" + linia.getValue().getRemisy() +
-                    " P:" + linia.getValue().getPorazki() +
-                    " BrZd:" + linia.getValue().getBramkiZdobyte() +
-                    " BrStr:" + linia.getValue().getBramkiStracone());
+                    " punkty:" + linia.getValue().getPunkty() +
+                    " Wygrane:" + linia.getValue().getWygrane() +
+                    " Rremisy:" + linia.getValue().getRemisy() +
+                    " Przegrane:" + linia.getValue().getPorazki() +
+                    " Bramki Zdobyte:" + linia.getValue().getBramkiZdobyte() +
+                    " Bramki Stracone:" + linia.getValue().getBramkiStracone());
         }
     }
 
