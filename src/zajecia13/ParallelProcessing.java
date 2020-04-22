@@ -12,11 +12,11 @@ public class ParallelProcessing {
         printers.add(new Printer("Hello from thread - trzeci", 2000));
         printers.add(new Printer("Hello from thread - czwarty", 2200));
 
-        List<Thread> threads = new ArrayList<>();
+        List<Thread> threads = new ArrayList<>(); // niepotrzebne
         for (Printer printer : printers) {
             Thread thread = new Thread(printer); // Thread przyjmuje klasy implemantujące Runnable
             thread.start(); // nie run() !!!
-            threads.add(thread);
+            threads.add(thread); // niepotrzebne
         }
 
         System.out.println("Hello from main");
