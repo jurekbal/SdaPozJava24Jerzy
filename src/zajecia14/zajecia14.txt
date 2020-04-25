@@ -1,0 +1,12 @@
+25-04-2020 Mateusz Chromiński
+- Generyki
+- Refleksje
+- Programowanie funkcyjne:
+(strumienie,
+lambdy
+wskaźniki na funkcje (o::b)
+
+ale także dodatkowe info w tematach:
+- interfejsy Comparable i Comparator
+- klasy anonimowe (na przykładzie implementacji interfejsu Comparator i Runnable!)
+- klasy wewnętrzne
