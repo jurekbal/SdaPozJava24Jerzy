@@ -7,7 +7,9 @@ import java.util.Scanner;
 
 class Pliki {
 
-    private String plik;
+    private final String plik;
+    private final Pracownik[] lista; // = new Pracownik[100];
+    private final int liczbaPracownikow;
     private final int POLE_W_PLIKU_NAZWISKO = 0;
     private final int POLE_W_PLIKU_IMIE = 1;
     private final int POLE_W_PLIKU_PLEC = 2;
@@ -18,9 +20,34 @@ class Pliki {
 
     public Pliki(String plik) {
         this.plik = plik;
+        this.lista = null;
+        this.liczbaPracownikow = 0;
     }
 
+    public Pliki(String plik, Pracownik[] lista, int liczbaPracownikow) {
+        this.plik = plik;
+        this.lista = lista;
+        this.liczbaPracownikow = liczbaPracownikow;
+    }
 
+    public void exportAllToFile() throws Exception {
+        if (lista != null) {
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(plik));
+            for (int i = 0; i < liczbaPracownikow; i++) {
+
+                bufferedWriter.write(lista[i].getNazwisko() +
+                        " " + lista[i].getImie() +
+                        " " + lista[i].getPlec() +
+                        " " + lista[i].getNrDzialu() +
+                        " " + String.format(Locale.US, "%.2f", lista[i].getPlaca()) +
+                        " " + lista[i].getWiek() +
+                        " " + lista[i].getLiczbaDzieci() +
+                        System.lineSeparator()
+                );
+            }
+            bufferedWriter.close();
+        }
+    }
 
     void wyswietlDaneNajdluzszeNazwisko() throws IOException {
         BufferedReader bufferedReader = new BufferedReader(new FileReader(plik));

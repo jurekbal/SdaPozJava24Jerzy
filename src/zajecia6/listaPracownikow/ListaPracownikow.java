@@ -77,7 +77,9 @@ public class ListaPracownikow {
             return null;
         }
         try {
-            exportAllToFile(fileName);
+            //TODO Pass deep copy of lista to external export class
+            Pliki pliki = new Pliki(BASE_PATH + fileName, lista, liczbaPracownikow);
+            pliki.exportAllToFile();
             return fileName;
         } catch (Exception e) {
             System.err.println(e.getLocalizedMessage());
@@ -85,21 +87,22 @@ public class ListaPracownikow {
         }
     }
 
-    private void exportAllToFile(String fileName) throws Exception {
-        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(BASE_PATH + fileName));
-        for (int i = 0; i < liczbaPracownikow; i++) {
-            bufferedWriter.write(lista[i].getNazwisko() +
-                    " " + lista[i].getImie() +
-                    " " + lista[i].getPlec() +
-                    " " + lista[i].getNrDzialu() +
-                    " " + String.format( Locale.US,"%.2f", lista[i].getPlaca()) +
-                    " " + lista[i].getWiek() +
-                    " " + lista[i].getLiczbaDzieci() +
-                    System.lineSeparator()
-            );
-        }
-        bufferedWriter.close();
-    }
+    //TODO Delete exportAllToFile after testing
+//    private void exportAllToFile(String fileName) throws Exception {
+//        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(BASE_PATH + fileName));
+//        for (int i = 0; i < liczbaPracownikow; i++) {
+//            bufferedWriter.write(lista[i].getNazwisko() +
+//                    " " + lista[i].getImie() +
+//                    " " + lista[i].getPlec() +
+//                    " " + lista[i].getNrDzialu() +
+//                    " " + String.format( Locale.US,"%.2f", lista[i].getPlaca()) +
+//                    " " + lista[i].getWiek() +
+//                    " " + lista[i].getLiczbaDzieci() +
+//                    System.lineSeparator()
+//            );
+//        }
+//        bufferedWriter.close();
+//    }
 
     // funkcja 4
     public void usunPracownika() {

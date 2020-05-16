@@ -15,7 +15,7 @@ public class FunctionalProgramingExample {
         // lambda
         // () -> ()
         // definicja -> blok kodu do wykonania
-        // zob klasę Bak w tym pakiecie (oraz Main w generykach (kod prowadzącego)
+        // zob klasę Bank w tym pakiecie (oraz Main w generykach (kod prowadzącego)
 
         // strumienie:
         //nonFunctional();
@@ -86,7 +86,9 @@ public class FunctionalProgramingExample {
             ints.add(i);
         }
 
-        List<Integer> ints2 = ints.stream().filter(n -> n %2  == 0).collect(Collectors.toList());
+        List<Integer> ints2 = ints.stream().
+                filter(n -> n %2  == 0).
+                collect(Collectors.toList());
         //co tu się odj..ało:
         // zamiana listy na strumień , filtracja, zebranie do listy i przypisanie do nowej listy
 
