@@ -1,9 +1,7 @@
 package zajecia6.listaPracownikow;
 
-import javax.swing.text.html.HTML;
 import java.io.*;
 import java.util.Locale;
-import java.util.Scanner;
 
 class Pliki {
 

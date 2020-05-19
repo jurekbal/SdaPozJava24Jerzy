@@ -1,7 +1,5 @@
 package zajecia6.listaPracownikow;
 
-import java.io.*;
-import java.util.Locale;
 import java.util.Scanner;
 
 public class ListaPracownikow {
@@ -86,23 +84,6 @@ public class ListaPracownikow {
             return null;
         }
     }
-
-    //TODO Delete exportAllToFile after testing
-//    private void exportAllToFile(String fileName) throws Exception {
-//        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(BASE_PATH + fileName));
-//        for (int i = 0; i < liczbaPracownikow; i++) {
-//            bufferedWriter.write(lista[i].getNazwisko() +
-//                    " " + lista[i].getImie() +
-//                    " " + lista[i].getPlec() +
-//                    " " + lista[i].getNrDzialu() +
-//                    " " + String.format( Locale.US,"%.2f", lista[i].getPlaca()) +
-//                    " " + lista[i].getWiek() +
-//                    " " + lista[i].getLiczbaDzieci() +
-//                    System.lineSeparator()
-//            );
-//        }
-//        bufferedWriter.close();
-//    }
 
     // funkcja 4
     public void usunPracownika() {
